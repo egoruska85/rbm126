@@ -63,7 +63,7 @@
     <%= render 'include/navbar' %>
     <section id="services" class="section">
 
-      <div class="container-fluid text-center parallax" style="background-image: url(<%= rails_blob_url(@service.image) %>);">
+      <div class="container-fluid text-center parallax" style="background-image: url(<%= rails_blob_url(@service.image) if @service.image.attached? %>);">
         <center>
           <div class="row g-4">
             <center>
