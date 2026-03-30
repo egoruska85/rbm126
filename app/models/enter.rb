@@ -1,0 +1,2 @@
+class Enter < ApplicationRecord
+end
