@@ -8,9 +8,39 @@
 
     <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
     <%= javascript_importmap_tags %>
+
+    <style media="screen">
+      html, body {
+        height: 100%;
+        margin: 0;
+      }
+
+      .wrapper {
+        min-height: 84.6vh;       /* вся высота экрана */
+        display: flex;
+        flex-direction: column;
+      }
+
+      .content {
+        flex: 1;                /* занимает всё свободное место */
+      }
+
+      .footer {
+        background: #333;
+        color: white;
+        padding: 20px;
+      }
+    </style>
   </head>
 
   <body>
+    <div class="wrapper">
+      <main class="content">
     <%= yield %>
+        </main>
+      </div>
+      <footer class="bg-dark text-white text-center py-4 footer">
+      © <%= Time.now.year %> Профессиональный сервис бытовой техники. Все права защищены.
+    </footer>
   </body>
 </html>

@@ -79,7 +79,7 @@
     <div class="alert alert-success"><%= flash[:notice] %></div>
   <% end %>
     <h1 class="display-5 mb-3">Ремонт бытовой техники</h1>
-    <p class="lead mb-4">Выезд мастера в день обращения. Гарантия до 12 месяцев.</p>
+    <h1 class="lead mb-4"><b>Выезд мастера в день обращения. Гарантия до 12 месяцев.</b></h1>
     <div class="d-flex flex-column flex-sm-row justify-content-center align-items-center gap-3">
       <button type="button" class="btn btn-dark btn-lg" data-bs-toggle="modal" data-bs-target="#exampleModal">
         Оставить заявку
@@ -106,7 +106,8 @@
         <center>
           <div class="col-md-6 col-lg-3">
             <div class="card p-4 shadow-sm h-100" style="background-color: rgba(0, 0, 0, 0.9);">
-              <h2 class="mb-6 text-white">Наши услуги</h2>
+
+              <h2><%= link_to 'Наши услуги', services_path, class:"nav-link text-white"%></h2>
             </div>
           </div>
         </center>

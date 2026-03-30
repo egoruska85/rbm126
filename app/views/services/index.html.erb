@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+    <style>
+
+      .parallax {
+        /* Фоновая картинка */
+
+
+        /* Высота блока */
+        height: 87vh;
+
+        /* Эффект параллакса */
+        background-attachment: fixed;
+        background-position: center;
+        background-repeat: no-repeat;
+        background-size: cover;
+
+        /* Центрирование текста */
+
+      }
+
+      body {
+        padding-top: 115px;
+
+      }
+
+      .hero h1 {
+        font-weight: 700;
+      }
+
+      .section {
+
+      }
+
+      .card:hover {
+        transform: translateY(-5px);
+        transition: 0.3s;
+
+
+      }
+    </style>
+  </head>
+  <body>
+    <%= render 'include/navbar' %>
+    <section id="services" class="section">
+
+      <div class="container-fluid text-center parallax" style="background-image: url(<%= rails_blob_url(Picture.last.servces_image) %>);">
+        <center>
+          <div class="row g-4">
+            <center>
+              <div class="col-md-6 col-lg-3">
+                <div class="card p-4 shadow-sm h-100" style="background-color: rgba(0, 0, 0, 0.9);">
+
+                  <h2><%= link_to 'Наши услуги', services_path, class:"nav-link text-white"%></h2>
+                </div>
+              </div>
+            </center>
+          </div>
+          <br><br>
+        </center>
+        <div class="container">
+          <div class="row g-4">
+            <% @services.each do |service| %>
+              <div class="col-md-6 col-lg-3">
+                <div class="card p-4 shadow-lg h-100 text-white" style="background-color: rgba(0, 0, 0, 0.9);">
+                  <h4>
+                    <%= service.title.capitalize %>
+                  </h4>
+                </div>
+              </div>
+            <% end %>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section id="contacts" class="section">
+      <div class="container text-center">
+        <h2 class="mb-4">Контакты</h2>
+
+        <p>📞 <%= phone_to @organization.phones.last.phone, class:"btn btn-light" %></p>
+        <p>📍 Ессентуки</p>
+        <p>🕒 Ежедневно с 9:00 до 21:00</p>
+      </div>
+    </section>
+  </body>
+</html>
