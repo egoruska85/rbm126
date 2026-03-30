@@ -5,7 +5,12 @@ Rails.application.routes.draw do
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
   root "main#index"
 
-  resources :backoffices
+  resources :backoffices do
+    member do
+      patch :toggle_active
+      patch :toggle_completed
+    end
+  end
   resources :orders
   # Defines the root path route ("/")
   # root "articles#index"
