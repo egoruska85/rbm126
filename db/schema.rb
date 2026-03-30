@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2026_03_30_072101) do
+ActiveRecord::Schema[7.0].define(version: 2026_03_30_084721) do
   create_table "active_storage_attachments", force: :cascade do |t|
     t.string "name", null: false
     t.string "record_type", null: false
@@ -100,6 +100,16 @@ ActiveRecord::Schema[7.0].define(version: 2026_03_30_072101) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "subservices", force: :cascade do |t|
+    t.decimal "price"
+    t.string "title"
+    t.text "desc"
+    t.integer "service_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["service_id"], name: "index_subservices_on_service_id"
+  end
+
   create_table "usermessages", force: :cascade do |t|
     t.text "message"
     t.integer "order_id", null: false
@@ -130,6 +140,7 @@ ActiveRecord::Schema[7.0].define(version: 2026_03_30_072101) do
   add_foreign_key "emails", "organizations"
   add_foreign_key "orders", "services"
   add_foreign_key "phones", "organizations"
+  add_foreign_key "subservices", "services"
   add_foreign_key "usermessages", "orders"
   add_foreign_key "usermessages", "users"
 end

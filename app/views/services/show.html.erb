@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+    <style>
+      .parallax {
+        /* Фоновая картинка */
+        background-image:
+        url(<%= rails_blob_url(@parallax) %>);
+
+        /* Высота блока */
+        height: 90vh;
+
+        /* Эффект параллакса */
+        background-attachment: fixed;
+        background-position: center;
+        background-repeat: no-repeat;
+        background-size: cover;
+
+        /* Центрирование текста */
+
+      }
+
+      body {
+        padding-top: 110px;
+
+      }
+
+      .hero {
+        background-image:
+        linear-gradient(
+            to right,
+            rgba(128, 128, 128, 0) 0%,
+            rgba(128, 128, 128, 0.5) 20%,
+            rgba(128, 128, 128, 0.8) 50%,
+            rgba(128, 128, 128, 0.5) 80%,
+            rgba(128, 128, 128, 0) 100%
+            ),
+          url(<%= rails_blob_url(@heroimage) %>);
+        color: white;
+        padding: 100px 20px;
+        text-align: center;
+      }
+
+      .hero h1 {
+        font-weight: 700;
+      }
+
+      .section {
+
+      }
+
+      .card:hover {
+        transform: translateY(-5px);
+        transition: 0.3s;
+
+
+      }
+    </style>
+  </head>
+  <body>
+    <%= render 'include/navbar' %>
+    <section id="services" class="section">
+
+      <div class="container-fluid text-center parallax" style="background-image: url(<%= rails_blob_url(@service.image) %>);">
+        <center>
+          <div class="row g-4">
+            <center>
+              <div class="col-md-6 col-lg-3">
+                <div class="card p-4 shadow-sm h-100" style="background-color: rgba(0, 0, 0, 0.9);">
+
+                  <h1 class="text-white"><%= @service.title %></h1>
+                </div>
+              </div>
+            </center>
+          </div>
+          <br><br>
+        </center>
+
+      </div>
+    </section>
+  </body>
+</html>
