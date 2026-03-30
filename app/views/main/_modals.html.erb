@@ -51,19 +51,29 @@
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
-        <% if @organization.phones.last.telegramm.present? %>
-          <a href="https://t.me/<%= @organization.phones.last.phone %>" class="btn btn-outline-light btn-lg">
-            <%= image_tag('/images/png-klev-club-cnob-p-znachok-telegram-belii-png-20.png', style:"width: 4rem;") %>
+        <% if @organization.phones.last.telegramm.present? and Picture.last.icon_telegram %>
+          <a href="https://t.me/<%= @organization.phones.last.telegramm %>" class="btn btn-outline-light btn-lg">
+            <%= image_tag(Picture.last.icon_telegram, style:"width: 4rem;") %>
           </a>
         <% end %>
-        <% if @organization.phones.last.max == true %>
-          <a href="https://max.ru/<%= @organization.phones.last.phone %>" class="btn btn-outline-light btn-lg">
-            <img src="/images/max-messenger-sign-logo.svg" alt="MAX мессенджер" style="width: 4rem;">
+        <% if @organization.phones.last.max.present? and Picture.last.icon_max %>
+          <a href="https://max.ru/<%= @organization.phones.last.max %>" class="btn btn-outline-light btn-lg">
+            <img src="<%= Picture.last.icon_telegram %>" alt="MAX мессенджер" style="width: 4rem;">
           </a>
         <% end %>
-        <% if @organization.phones.last.max == true %>
+        <% if @organization.phones.last.vk.present? and Picture.last.icon_vk %>
           <a href="https://vk.ru/id536074327" class="btn btn-outline-light btn-lg">
             <img src="/images/VK.png" alt="VK" style="width: 4rem;">
+          </a>
+        <% end %>
+        <% if @organization.phones.last.whatsapp.present? and Picture.last.icon_whatsapp %>
+          <a href="https://vk.ru/id536074327" class="btn btn-outline-light btn-lg">
+            <%= image_tag(Picture.last.icon_whatsapp, style:"width: 4rem;") %>
+          </a>
+        <% end %>
+        <% if @organization.phones.last.imo.present? and Picture.last.icon_imo %>
+          <a href="https://vk.ru/id536074327" class="btn btn-outline-light btn-lg">
+            <%= image_tag(Picture.last.icon_imo, style:"width: 4rem;") %>
           </a>
         <% end %>
 
