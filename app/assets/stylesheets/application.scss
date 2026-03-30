@@ -1,8 +1,10 @@
 @import "bootstrap";
 
-.map-container {
-  grid-column: 1 / -1; /* Растягивает карту на все колонки грида */
-  width: 100%;         /* Занимает всю доступную ширину */
-  height: 450px;       /* Задайте высоту явно, чтобы она была заметной */
-  margin-top: 20px;
+@media (max-width: 768px) {
+  .parallax {
+    background-attachment: scroll !important; /* Фон скроллится вместе с контентом */
+    background-size: cover;
+    height: auto !important; /* Позволяет блоку растягиваться по высоте контента */
+    padding: 40px 0; /* Добавляем внутренние отступы, чтобы контент не прилипал */
+  }
 }
