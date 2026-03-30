@@ -1,2 +1,168 @@
-<h1>Main#index</h1>
-<p>Find me in app/views/main/index.html.erb</p>
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Сервисный центр</title>
+
+  <!-- Bootstrap CSS -->
+
+
+  <style>
+    .parallax {
+      /* Фоновая картинка */
+      background-image:
+      url(<%= rails_blob_url(@parallax) %>);
+
+      /* Высота блока */
+      height: 100vh;
+
+      /* Эффект параллакса */
+      background-attachment: fixed;
+      background-position: center;
+      background-repeat: no-repeat;
+      background-size: cover;
+
+      /* Центрирование текста */
+
+    }
+
+    body {
+      padding-top: 80px;
+
+    }
+
+    .hero {
+      background-image:
+      linear-gradient(
+          to right,
+          rgba(128, 128, 128, 0) 0%,
+          rgba(128, 128, 128, 0.5) 20%,
+          rgba(128, 128, 128, 0.8) 50%,
+          rgba(128, 128, 128, 0.5) 80%,
+          rgba(128, 128, 128, 0) 100%
+          ),
+        url(<%= rails_blob_url(@heroimage) %>);
+      color: white;
+      padding: 100px 20px;
+      text-align: center;
+    }
+
+    .hero h1 {
+      font-weight: 700;
+    }
+
+    .section {
+
+    }
+
+    .card:hover {
+      transform: translateY(-5px);
+      transition: 0.3s;
+
+
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAVBAR -->
+<%= render 'include/navbar' %>
+
+
+<!-- HERO -->
+<section class="hero text-black" style="background-repeat: no-repeat; background-size: cover;  background-position: center;">
+  <% if flash[:alert] %>
+    <div class="alert alert-danger"><%= flash[:alert] %></div>
+  <% end %>
+  <% if flash[:notice] %>
+    <div class="alert alert-success"><%= flash[:notice] %></div>
+  <% end %>
+    <h1 class="display-5 mb-3">Ремонт бытовой техники</h1>
+    <p class="lead mb-4">Выезд мастера в день обращения. Гарантия до 12 месяцев.</p>
+    <div class="d-flex flex-column flex-sm-row justify-content-center align-items-center gap-3">
+      <button type="button" class="btn btn-dark btn-lg" data-bs-toggle="modal" data-bs-target="#exampleModal">
+        Оставить заявку
+      </button>
+      <button type="button" class="btn btn-dark btn-lg" data-bs-toggle="modal" data-bs-target="#exampleModal2">
+        Консультация
+      </button>
+    </div>
+
+</section>
+
+
+<!-- Button trigger modal -->
+<%= render "modals" %>
+
+
+
+<!-- SERVICES -->
+<section id="services" class="section">
+
+  <div class="container-fluid text-center parallax" style="background-image: url(<%= rails_blob_url(@parallax) %>);">
+    <center>
+      <div class="row g-4">
+        <center>
+          <div class="col-md-6 col-lg-3">
+            <div class="card p-4 shadow-sm h-100" style="background-color: rgba(0, 0, 0, 0.9);">
+              <h2 class="mb-6 text-white">Наши услуги</h2>
+            </div>
+          </div>
+        </center>
+      </div>
+      <br><br>
+    </center>
+    <div class="container">
+      <div class="row g-4">
+        <% @services.each do |service| %>
+          <div class="col-md-6 col-lg-3">
+            <div class="card p-4 shadow-lg h-100 text-white" style="background-color: rgba(0, 0, 0, 0.9);">
+              <h4>
+                <%= service.title.capitalize %>
+              </h4>
+            </div>
+          </div>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ADVANTAGES -->
+
+<section id="abouts" class="section bg-light">
+  <div class="container text-center shadow-lg p-3 mb-5 bg-body-tertiary rounded">
+    <br><br>
+    <h2>О нас</h2>
+    <%= simple_format @organization.about, style:"font-size: 15px;" %>
+    <h4 class="mb-5">Почему выбирают нас</h4>
+    <div class="row g-4">
+      <% @entries.each do |enter| %>
+        <div class="col-md-6 col-lg-3">
+          <div class="card p-4 shadow-sm h-100">
+            <%= enter.title %>
+          </div>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</section>
+
+
+<!-- CONTACTS -->
+<section id="contacts" class="section">
+  <div class="container text-center">
+    <h2 class="mb-4">Контакты</h2>
+
+    <p>📞 <%= phone_to @organization.phones.last.phone, class:"btn btn-light" %></p>
+    <p>📍 Ессентуки</p>
+    <p>🕒 Ежедневно с 9:00 до 21:00</p>
+  </div>
+</section>
+
+
+<!-- Bootstrap JS -->
+
+</body>
+</html>

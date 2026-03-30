@@ -1,8 +1,20 @@
 class ApplicationController < ActionController::Base
   before_action :configure_permitted_parameters, if: :devise_controller?
-  before_action :set_locale
+  before_action :set_locale, :set_variable
 
   private
+
+  def set_variable
+    @organization = Organization.last
+
+    @logo_organization = @organization.logo
+    @name_organization = @organization.name
+    @picturies = Picture.last
+
+    @entries = Enter.all
+    @parallax = @picturies.parallax
+    @heroimage = @picturies.heroimage
+  end
 
   def set_locale
     I18n.locale = extract_locale || I18n.default_locale
