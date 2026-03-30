@@ -69,8 +69,15 @@
             <center>
               <div class="col-md-6 col-lg-3">
                 <div class="card p-4 shadow-sm h-100" style="background-color: rgba(0, 0, 0, 0.9);">
-
                   <h1 class="text-white"><%= @service.title %></h1>
+                </div>
+                <br>
+                <div class="card p-4 shadow-sm h-100" style="background-color: rgba(0, 0, 0, 0.9);">
+                  <h4 class="text-white">Подробные работы</h4>
+                  <hr class="text-white">
+                    <% @service.subservices.each do |subservice| %>
+                      <p class="text-white"><%= subservice.title %> - <%= subservice.price %> &#8381;</p>
+                    <% end %>
                 </div>
               </div>
             </center>
