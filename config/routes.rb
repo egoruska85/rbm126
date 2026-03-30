@@ -6,6 +6,7 @@ Rails.application.routes.draw do
   root "main#index"
 
   resources :backoffices
+  resources :orders
   # Defines the root path route ("/")
   # root "articles#index"
 end

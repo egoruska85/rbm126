@@ -1,0 +1,19 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  service: one
+  name: MyString
+  desc: MyText
+  phone: MyString
+  completed: false
+  accepted: false
+  answer: MyText
+
+two:
+  service: two
+  name: MyString
+  desc: MyText
+  phone: MyString
+  completed: false
+  accepted: false
+  answer: MyText

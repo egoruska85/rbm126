@@ -1,0 +1,76 @@
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <center>
+    <div class="modal-dialog modal-fullscreen">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="exampleModalLabel">РемБытМастер126</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <% if flash[:alert] %>
+            <div class="alert alert-danger"><%= flash[:alert] %></div>
+          <% end %>
+
+            <%= form_for :order, url: orders_path do |f| %>
+              <h6>Выберите услугу</h6>
+              <%= f.select :service_id, Service.all.map { |s| [s.name_title, s.id] }, {}, { class:"form-control", style:"max-width: 400px;" } %>
+              <br>
+              <% unless user_signed_in? %>
+                <h6>Как к Вам обращаться?</h6>
+                <%= f.text_field :name, class:"form-control", style:"max-width: 400px;" %>
+              <% end %>
+              <br>
+              <h6>Опишите вашу проблему в технике</h6>
+                <%= f.text_area :desc, class:"form-control", style:"max-width: 400px;", rows:"8" %>
+              <br>
+                <%= f.label "Фото с техники" %>
+                <%= f.file_field :images, multiple: true, class:"btn" %>
+              <br>
+              <% unless user_signed_in? %>
+                <h6>Номер телефона для связи с Вами.</h6>
+                <%= f.text_field :phone, class:"form-control", style:"max-width: 400px;", value:"+7" %>
+              <% end %>
+              <br>
+              <%= f.submit 'Записаться', class:"btn btn-success" %>
+            <% end %>
+
+        </div>
+      </div>
+    </div>
+  </center>
+</div>
+
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal2" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="exampleModalLabel">Выберите месенджер</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <% if @organization.phones.last.telegramm.present? %>
+          <a href="https://t.me/<%= @organization.phones.last.phone %>" class="btn btn-outline-light btn-lg">
+            <%= image_tag('/images/png-klev-club-cnob-p-znachok-telegram-belii-png-20.png', style:"width: 4rem;") %>
+          </a>
+        <% end %>
+        <% if @organization.phones.last.max == true %>
+          <a href="https://max.ru/<%= @organization.phones.last.phone %>" class="btn btn-outline-light btn-lg">
+            <img src="/images/max-messenger-sign-logo.svg" alt="MAX мессенджер" style="width: 4rem;">
+          </a>
+        <% end %>
+        <% if @organization.phones.last.max == true %>
+          <a href="https://vk.ru/id536074327" class="btn btn-outline-light btn-lg">
+            <img src="/images/VK.png" alt="VK" style="width: 4rem;">
+          </a>
+        <% end %>
+
+      </div>
+      <div class="modal-footer">
+
+      </div>
+    </div>
+  </div>
+</div>
