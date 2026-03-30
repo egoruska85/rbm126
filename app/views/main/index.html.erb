@@ -60,6 +60,18 @@
       transform: translateY(-5px);
       transition: 0.3s;
 
+      .map-wrapper {
+    grid-column: 1 / -1; /* Растянуть на всю ширину, если нужно */
+    width: 100%;
+    height: 400px; /* Высота ОБЯЗАТЕЛЬНА */
+    overflow: hidden;
+  }
+
+  iframe {
+    display: block; /* Убирает лишний зазор снизу */
+    width: 100%;
+    height: 100%;
+  }
 
     }
   </style>
@@ -150,8 +162,75 @@
 
 
 <!-- CONTACTS -->
+<div class="shadow-lg p-3 mb-5 bg-body-tertiary rounded container">
+  <div class="row">
+    <div class="col-12 col-lg-4">
+      <div map-responsive">
+        <script type="text/javascript" charset="utf-8" async src="https://api-maps.yandex.ru/services/constructor/1.0/js/?um=constructor%3A6f0290fe81bea1501ab1148db63aed00c2c17880bdf5566d588151e09c447503&amp;width=320&amp;height=554&amp;lang=ru_RU&amp;scroll=true"></script>
+      </div>
+    </div>
+    <div class="col-12 col-lg-8">
+      <%= form_for @contact do |f| %>
+      <!--</div>-->
+      <!--<form method="POST" id="contactForm" name="contactForm" class="contactForm">-->
+      <div class="row">
+        <div class="col-md-6">
+          <div class="form-group">
+            <!--<label class="label" for="name">Full Name</label>
+            <input type="text" class="form-control" name="name" id="name" placeholder="Name">-->
+            <%= f.label t('contact.name') %>
+            <%= f.text_field :name, class:'form-control', placeholder: t('contact.name')%>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="form-group">
+            <!--<label class="label" for="email">Email Address</label>
+            <input type="email" class="form-control" name="email" id="email" placeholder="Email">-->
+            <%= f.label t('contact.mail') %>
+            <%= f.text_field :email, class:'form-control', placeholder: t('contact.mail')%>
+          </div>
+        </div>
+        <div class="col-md-12">
+          <div class="form-group">
+            <!--<label class="label" for="subject">Subject</label>
+            <input type="text" class="form-control" name="subject" id="subject" placeholder="Subject">-->
+            <%= f.label t('contact.sales_phone') %>
+            <%= f.text_field :phone, class:'form-control', placeholder: t('contact.sales_phone'), value:'+', style:"max-width: 250px;"%>
+          </div>
+        </div>
+        <div class="col-md-12">
+          <div class="form-group">
+            <!--<label class="label" for="#">Message</label>
+            <textarea name="message" class="form-control" id="message" cols="30" rows="4" placeholder="Message"></textarea>-->
+            <%= f.label t('contact.message') %>
+            <%= f.text_area :message, class:'form-control', placeholder: t('contact.message'), rows:"6" %>
+          </div>
+        </div>
+        <div class="col-md-12">
+          <div class="form-group">
+            <!--<label class="label" for="#">Message</label>
+            <textarea name="message" class="form-control" id="message" cols="30" rows="4" placeholder="Message"></textarea>-->
+            <%= f.file_field :file, class:'form-control', type:'file', id:'formFileMultiple', multiple: true %>
+          </div>
+        </div>
+
+        <div class="col-md-12">
+          <div class="form-group">
+            <%= f.submit 'Отправить', class:'btn btn-primary'%>
+            <!--<input type="submit" value="Send Message" class="btn btn-primary">-->
+            <div class="submitting"></div>
+          </div>
+        </div>
+      </div>
+      <!--</form>-->
+
+      <% end %>
+
+</div>
+<hr>
 <section id="contacts" class="section">
   <div class="container text-center">
+
     <h2 class="mb-4">Контакты</h2>
 
     <p>📞 <%= phone_to @organization.phones.last.phone, class:"btn btn-light" %></p>

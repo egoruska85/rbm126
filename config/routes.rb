@@ -13,6 +13,7 @@ Rails.application.routes.draw do
   end
   resources :orders
   resources :services
+  resources :contacts
   # Defines the root path route ("/")
   # root "articles#index"
 end
