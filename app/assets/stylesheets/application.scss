@@ -1,18 +1,1 @@
 @import "bootstrap";
-
-.parallax {
-  /* Фоновая картинка */
-  background-image: url("<%= rails_blob_url(@parallax) %>");
-
-  /* Высота блока */
-  height: 100vh;
-
-  /* Эффект параллакса */
-  background-attachment: fixed;
-  background-position: center;
-  background-repeat: no-repeat;
-  background-size: cover;
-
-  /* Центрирование текста */
-
-}
