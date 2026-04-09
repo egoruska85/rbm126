@@ -1,10 +1,7 @@
 class BackofficesController < ApplicationController
-  before_action :authenticate_user!
+  before_action :authenticate_user!, :check_admin
   def index
     @orders = Order.all.order(updated_at: :desc).where(completed: nil)
-    if current_user.admin == nil
-      redirect_to root_path
-    end
   end
   def show
     @order = Order.find(params[:id])
@@ -31,6 +28,12 @@ class BackofficesController < ApplicationController
   end
 
   private
+
+  def check_admin
+    if current_user.admin == nil
+      redirect_to root_path
+    end
+  end
 
   def order_params
     params.require(:order).permit(:service_id, :name, :desc, :phone, :answer, images: [])
