@@ -1,6 +1,6 @@
 class MainController < ApplicationController
   def index
-    @services = Service.all
+    @services = Service.order(:numeric)
     @contact = Contact.new
   end
 end
