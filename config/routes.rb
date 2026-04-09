@@ -14,6 +14,7 @@ Rails.application.routes.draw do
   resources :orders
   resources :services
   resources :contacts
+  resources :frontoffices
   # Defines the root path route ("/")
   # root "articles#index"
 end

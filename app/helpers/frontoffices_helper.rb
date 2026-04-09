@@ -1,0 +1,2 @@
+module FrontofficesHelper
+end
