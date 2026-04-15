@@ -8,3 +8,42 @@
     padding: 40px 0; /* Добавляем внутренние отступы, чтобы контент не прилипал */
   }
 }
+
+
+/* Контейнер для поля ввода (нижняя панель) */
+.message-input-container {
+  display: flex;
+  align-items: flex-end;
+  padding: 10px;
+  background: #f0f2f5;
+  border-top: 1px solid #ddd;
+}
+
+/* Само поле ввода */
+.messenger-textarea {
+  width: 100%;
+  min-height: 40px;
+  max-height: 150px;
+  padding: 10px 15px;
+  border: 1px solid transparent;
+  border-radius: 20px; /* Скругленные края как в мессенджерах */
+  background: #ffffff;
+  resize: none; /* Убираем ручное изменение размера */
+  outline: none;
+  font-family: inherit;
+  font-size: 15px;
+  line-height: 1.4;
+  transition: border-color 0.2s;
+}
+
+.messenger-textarea:focus {
+  border-color: #0084ff; /* Цвет при клике */
+}
+
+.fat-hr {
+  height: 4px;             /* Толщина линии */
+  background-color: #333;  /* Цвет линии */
+  border: none;            /* Убираем стандартную рамку браузера */
+  border-radius: 2px;      /* Скругляем края для мягкости */
+  margin: 20px 0;          /* Отступы сверху и снизу */
+}
