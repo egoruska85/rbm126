@@ -3,6 +3,7 @@ class FrontofficesController < ApplicationController
   def index
     @current_orders = Order.where(user_id: current_user.id, completed: false)
     @past_orders = Order.where(user_id: current_user.id, completed: true)
+    @page_title = current_user.username
   end
 
   def show
