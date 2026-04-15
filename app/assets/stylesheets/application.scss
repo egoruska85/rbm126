@@ -47,3 +47,32 @@
   border-radius: 2px;      /* Скругляем края для мягкости */
   margin: 20px 0;          /* Отступы сверху и снизу */
 }
+
+.image-modal {
+  display: none;
+  position: fixed;
+  z-index: 999;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0,0,0,0.9);
+  text-align: center;
+}
+
+.image-modal img {
+  max-width: 80%;
+  margin-top: 5%;
+}
+
+.prev, .next {
+  position: absolute;
+  top: 50%;
+  font-size: 40px;
+  color: white;
+  cursor: pointer;
+  padding: 20px;
+}
+
+.prev { left: 10px; }
+.next { right: 10px; }
