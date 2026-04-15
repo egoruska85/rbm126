@@ -82,6 +82,7 @@ gem 'rails_admin-i18n'
 
 gem 'simple_form'
 gem 'mail_form'
+gem "meta-tags"
 
 group :production do
   gem "pg"

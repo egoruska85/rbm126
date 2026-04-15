@@ -26,3 +26,10 @@ export default class extends Controller {
     }
   }
 }
+
+document.addEventListener("input", function (e) {
+  if (e.target.classList.contains("messenger-textarea")) {
+    e.target.style.height = "auto";
+    e.target.style.height = (e.target.scrollHeight) + "px";
+  }
+});

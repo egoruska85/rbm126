@@ -41,7 +41,7 @@ end
 
 private
 
-def order_params
-  params.require(:order).permit(:service_id, :name, :desc, :phone, images: [])
-end
+  def order_params
+    params.require(:order).permit(:service_id, :name, :desc, :phone, images: [])
+  end
 end
