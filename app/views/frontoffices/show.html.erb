@@ -55,7 +55,7 @@
             <%= image_tag(image, style:"width: 15rem" ) %>
           <% end %>
         <% else %>
-          Нет изображений
+          <%= image_tag('/images/no_photo.png', style:"width: 10rem")%>
         <% end %>
         <hr>
         <% if @order.accepted == true %>
