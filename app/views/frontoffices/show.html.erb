@@ -63,6 +63,13 @@
         <% else %>
           ⛔ Не взята
         <% end %>
+        <% if @order.accepted? %>
+          <% if @order.completed == true %>
+            ✅ Выполнено
+          <% elsif @order.accepted == true && @order.completed != true %>
+            ⛔ В процессе(Заявка принята)
+          <% end %>
+        <% end %>
         <%= turbo_stream_from "messages" %>
         <div class="row">
           <div class="col-12 col-lg-6">
