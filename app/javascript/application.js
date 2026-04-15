@@ -35,33 +35,12 @@ document.addEventListener("input", function (e) {
 });
 
 document.addEventListener("DOMContentLoaded", () => {
-  const images = document.querySelectorAll(".zoom-img");
   const modal = document.getElementById("imageModal");
   const modalImg = document.getElementById("modalImage");
 
-  let currentIndex = 0;
-
-  images.forEach((img, index) => {
-    img.addEventListener("click", () => {
-      modal.style.display = "block";
-      currentIndex = index;
-      modalImg.src = img.src;
-    });
+  modal.addEventListener("show.bs.modal", function (event) {
+    const trigger = event.relatedTarget;
+    const imgUrl = trigger.getAttribute("data-img-url");
+    modalImg.src = imgUrl;
   });
-
-  document.querySelector(".next").onclick = () => {
-    currentIndex = (currentIndex + 1) % images.length;
-    modalImg.src = images[currentIndex].src;
-  };
-
-  document.querySelector(".prev").onclick = () => {
-    currentIndex = (currentIndex - 1 + images.length) % images.length;
-    modalImg.src = images[currentIndex].src;
-  };
-
-  modal.onclick = (e) => {
-    if (e.target === modal) {
-      modal.style.display = "none";
-    }
-  };
 });
