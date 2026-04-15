@@ -1,7 +1,7 @@
 class BackofficesController < ApplicationController
   before_action :authenticate_user!, :check_admin
   def index
-    @orders = Order.all.order(updated_at: :desc).where(completed: false)
+    @orders = Order.all.order(updated_at: :desc).where(completed: false, completed: nil)
   end
   def show
     @order = Order.find(params[:id])
