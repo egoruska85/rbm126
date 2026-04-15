@@ -1,7 +1,7 @@
 class FrontofficesController < ApplicationController
   before_action :authenticate_user!
   def index
-    @current_orders = Order.where(user_id: current_user.id, completed: false)
+    @orders = Order.all.order(updated_at: :desc).where(completed: false, completed: nil)
   end
 
   def show
