@@ -3,6 +3,7 @@ class BackofficesController < ApplicationController
   def index
     @orders = Order.all.order(updated_at: :desc).where(completed: false)
     @completed_orders = Order.where(completed: true).order(updated_at: :desc).page(params[:page]).per(2)
+    @page_title = 'Заявки' + " " + current_user.username 
   end
   def show
     @order = Order.find(params[:id])
