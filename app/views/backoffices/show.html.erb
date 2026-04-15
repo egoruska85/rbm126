@@ -31,15 +31,7 @@
 
       }
 
-      .zoom-img { transition: transform 0.2s; cursor: zoom-in; }
-      .zoom-img:active {
-        position: fixed;
-        top: 0; left: 0; width: 100vw; height: 100vh;
-        object-fit: contain;
-        background: rgba(0,0,0,0.9);
-        z-index: 9999;
-        transform: scale(1);
-      }
+
     </style>
 
   </head>
@@ -61,20 +53,23 @@
                         <% end %>
         <hr>
         <% if @order.images.attached? %>
-          <% @order.images.each_with_index do |image, index| %>
+          <% @order.images.each do |image| %>
             <%= image_tag(image,
-              class: "zoom-img",
-              data: { index: index },
-              style: "width: 10rem; cursor: pointer;"
+              style: "width: 10rem; cursor: pointer;",
+              data: { bs_toggle: "modal", bs_target: "#imageModal", img_url: url_for(image) }
             ) %>
           <% end %>
         <% else %>
           <%= image_tag('/images/no_photo.png', style:"width: 10rem")%>
         <% end %>
-        <div id="imageModal" class="image-modal">
-          <span class="prev">&#10094;</span>
-          <img id="modalImage">
-          <span class="next">&#10095;</span>
+        <div class="modal fade" id="imageModal" tabindex="-1">
+          <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content bg-dark">
+              <div class="modal-body text-center">
+                <img id="modalImage" style="width: 100%;">
+              </div>
+            </div>
+          </div>
         </div>
         <hr>
         <%= button_to toggle_active_backoffice_path(@order),
