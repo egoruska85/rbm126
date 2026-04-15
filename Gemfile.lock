@@ -366,6 +366,7 @@ DEPENDENCIES
   devise-i18n
   importmap-rails
   jbuilder
+  kaminari
   mail_form
   meta-tags
   pg

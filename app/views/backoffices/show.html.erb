@@ -30,7 +30,18 @@
 
 
       }
+
+      .zoom-img { transition: transform 0.2s; cursor: zoom-in; }
+      .zoom-img:active {
+        position: fixed;
+        top: 0; left: 0; width: 100vw; height: 100vh;
+        object-fit: contain;
+        background: rgba(0,0,0,0.9);
+        z-index: 9999;
+        transform: scale(1);
+      }
     </style>
+
   </head>
   <body>
     <%= render "include/navbar" %>
@@ -51,7 +62,7 @@
         <hr>
         <% if @order.images.attached? %>
           <% @images.each do |image| %>
-            <%= image_tag(image, style:"width: 15rem" ) %>
+            <%= image_tag(image, class: "zoom-img", style: "width: 10rem;") %>
           <% end %>
         <% else %>
           <%= image_tag('/images/no_photo.png', style:"width: 15rem")%>

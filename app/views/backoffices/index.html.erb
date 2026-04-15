@@ -16,7 +16,18 @@
         text-align: left;
       }
 
+      .hero-completed {
+        background: linear-gradient(135deg, #64748b, #334155);
+        color: white;
+        padding: 100px 20px;
+        text-align: left;
+      }
+
       .hero h1 {
+        font-weight: 700;
+      }
+
+      .hero-completed h1 {
         font-weight: 700;
       }
 
@@ -37,7 +48,7 @@
 
     <!-- HERO -->
     <section class="hero">
-      <center><h1 class="display-5 mb-3">Заявки</h1></center>
+      <center><h1 class="display-5 mb-3">Текущие заявки</h1></center>
       <hr>
       <div class="container">
 
@@ -45,7 +56,9 @@
           <% @orders.each do |order| %>
             <div class="col-12 col-lg-6">
               <h3><%= order.desc %></h3>
+              <h6><%= order.service.title %></h6>
               <p><%= order.name %></p>
+              <%= image_tag(order.images.first, style:"width: 10rem;") %>
             </div>
             <div class="col-12 col-lg-6">
               <%= link_to backoffice_path(order), class:'btn btn-success' do %>
@@ -58,6 +71,31 @@
           <% end %>
         </div>
 
+      </div>
+    </section>
+    <section class="hero-completed">
+      <center><h1 class="display-5 mb-3">Выполненые заявки</h1></center>
+      <hr>
+      <div class="container">
+
+        <div class="row">
+          <% @completed_orders.each do |order| %>
+            <div class="col-12 col-lg-6">
+              <h3><%= order.desc %></h3>
+              <h6><%= order.service.title %></h6>
+              <p><%= order.name %></p>
+            </div>
+            <div class="col-12 col-lg-6">
+              <%= link_to backoffice_path(order), class:'btn btn-success' do %>
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-binoculars-fill" viewBox="0 0 16 16">
+                <path d="M4.5 1A1.5 1.5 0 0 0 3 2.5V3h4v-.5A1.5 1.5 0 0 0 5.5 1zM7 4v1h2V4h4v.882a.5.5 0 0 0 .276.447l.895.447A1.5 1.5 0 0 1 15 7.118V13H9v-1.5a.5.5 0 0 1 .146-.354l.854-.853V9.5a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 0-.5.5v.793l.854.853A.5.5 0 0 1 7 11.5V13H1V7.118a1.5 1.5 0 0 1 .83-1.342l.894-.447A.5.5 0 0 0 3 4.882V4zM1 14v.5A1.5 1.5 0 0 0 2.5 16h3A1.5 1.5 0 0 0 7 14.5V14zm8 0v.5a1.5 1.5 0 0 0 1.5 1.5h3a1.5 1.5 0 0 0 1.5-1.5V14zm4-11H9v-.5A1.5 1.5 0 0 1 10.5 1h1A1.5 1.5 0 0 1 13 2.5z"/>
+              </svg>
+              <% end %>
+            </div>
+            <hr>
+          <% end %>
+        </div>
+        <%= paginate @completed_orders %>
       </div>
     </section>
   </body>
