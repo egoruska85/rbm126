@@ -65,7 +65,7 @@
             <%= image_tag(image, class: "zoom-img", style: "width: 10rem;") %>
           <% end %>
         <% else %>
-          Нет изображений
+          <%= image_tag('/images/no_photo.png', style:"width: 10rem")%>
         <% end %>
         <hr>
         <%= button_to toggle_active_backoffice_path(@order),

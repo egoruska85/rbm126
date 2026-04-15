@@ -59,7 +59,11 @@
             <div class="col-12 col-lg-6">
               <h3><%= order.desc %></h3>
               <h6><%= order.service.title %></h6>
-              <%= image_tag(order.images.first, style:"width: 10rem;") %>
+              <% if order.images.attached? %>
+                <%= image_tag(order.images.first, style:"width: 10rem;") %>
+              <% else %>
+                <%= image_tag('/images/no_photo.png', style:"width: 10rem")%>
+              <% end %>
             </div>
             <div class="col-12 col-lg-6">
               <%= link_to frontoffice_path(order), class:'btn btn-success' do %>
