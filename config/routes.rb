@@ -18,6 +18,9 @@ Rails.application.routes.draw do
   resources :services
   resources :contacts
   resources :frontoffices
+  resources :works do
+    resources :comments
+  end
   #resources :messages
   # Defines the root path route ("/")
   # root "articles#index"

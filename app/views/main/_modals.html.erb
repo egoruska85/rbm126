@@ -1,85 +1,88 @@
-<!-- Modal -->
-<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <center>
-    <div class="modal-dialog modal-fullscreen">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h1 class="modal-title fs-5" id="exampleModalLabel">РемБытМастер126</h1>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-        </div>
-        <div class="modal-body">
-          <% if flash[:alert] %>
-            <div class="alert alert-danger"><%= flash[:alert] %></div>
-          <% end %>
-
-            <%= form_for :order, url: orders_path do |f| %>
-              <h6>Выберите услугу</h6>
-              <%= f.select :service_id, Service.all.map { |s| [s.name_title, s.id] }, {}, { class:"form-control", style:"max-width: 400px;" } %>
-              <br>
-              <% unless user_signed_in? %>
-                <h6>Как к Вам обращаться?</h6>
-                <%= f.text_field :name, class:"form-control", style:"max-width: 400px;" %>
-              <% end %>
-              <br>
-              <h6>Опишите вашу проблему в технике</h6>
-                <%= f.text_area :desc, class:"form-control", style:"max-width: 400px;", rows:"8" %>
-              <br>
-                <%= f.label "Фото с техники" %>
-                <%= f.file_field :images, multiple: true, class:"btn" %>
-              <br>
-              <% unless user_signed_in? %>
-                <h6>Номер телефона для связи с Вами.</h6>
-                <%= f.text_field :phone, class:"form-control", style:"max-width: 400px;", value:"+7" %>
-              <% end %>
-              <br>
-              <%= f.submit 'Записаться', class:"btn btn-success" %>
-            <% end %>
-
-        </div>
-      </div>
-    </div>
-  </center>
-</div>
-
-
-<!-- Modal -->
-<div class="modal fade" id="exampleModal2" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-fullscreen-sm-down modal-lg">
     <div class="modal-content">
-      <div class="modal-header">
-        <h1 class="modal-title fs-5" id="exampleModalLabel">Выберите месенджер</h1>
+      <div class="modal-header bg-light">
+        <h5 class="modal-title fw-bold">РемБытМастер126 — Оставить заявку</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
-      <div class="modal-body">
-        <% if @organization.phones.last.telegramm.present? and Picture.last.icon_telegram %>
-          <a href="https://t.me/<%= @organization.phones.last.telegramm %>" class="btn btn-outline-light btn-lg">
-            <%= image_tag(Picture.last.icon_telegram, style:"width: 4rem;") %>
-          </a>
-        <% end %>
-        <% if @organization.phones.last.max.present? and Picture.last.icon_max %>
-          <a href="https://max.ru/<%= @organization.phones.last.max %>" class="btn btn-outline-light btn-lg">
-            <img src="<%= Picture.last.icon_telegram %>" alt="MAX мессенджер" style="width: 4rem;">
-          </a>
-        <% end %>
-        <% if @organization.phones.last.vk.present? and Picture.last.icon_vk %>
-          <a href="https://vk.ru/id536074327" class="btn btn-outline-light btn-lg">
-            <img src="/images/VK.png" alt="VK" style="width: 4rem;">
-          </a>
-        <% end %>
-        <% if @organization.phones.last.whatsapp.present? and Picture.last.icon_whatsapp %>
-          <a href="https://vk.ru/id536074327" class="btn btn-outline-light btn-lg">
-            <%= image_tag(Picture.last.icon_whatsapp, style:"width: 4rem;") %>
-          </a>
-        <% end %>
-        <% if @organization.phones.last.imo.present? and Picture.last.icon_imo %>
-          <a href="https://vk.ru/id536074327" class="btn btn-outline-light btn-lg">
-            <%= image_tag(Picture.last.icon_imo, style:"width: 4rem;") %>
-          </a>
+      <div class="modal-body p-4">
+        <% if flash[:alert] %>
+          <div class="alert alert-danger shadow-sm"><%= flash[:alert] %></div>
         <% end %>
 
+        <%= form_for :order, url: orders_path, html: { class: "mx-auto", style: "max-width: 500px;" } do |f| %>
+          <div class="mb-3">
+            <%= f.label :service_id, "Выберите услугу", class: "form-label fw-bold" %>
+            <%= f.select :service_id, Service.all.map { |s| [s.name_title, s.id] }, {}, { class: "form-select form-select-lg" } %>
+          </div>
+
+          <% unless user_signed_in? %>
+            <div class="mb-3">
+              <%= f.label :name, "Как к Вам обращаться?", class: "form-label fw-bold" %>
+              <%= f.text_field :name, class: "form-control", placeholder: "Иван Иванович" %>
+            </div>
+          <% end %>
+
+          <div class="mb-3">
+            <%= f.label :desc, "Опишите проблему в технике", class: "form-label fw-bold" %>
+            <%= f.text_area :desc, class: "form-control", rows: "5", placeholder: "Например: Стиральная машина не сливает воду..." %>
+          </div>
+
+          <div class="mb-3">
+            <%= f.label :images, "Прикрепите фото техники (если есть)", class: "form-label fw-bold" %>
+            <%= f.file_field :images, multiple: true, class: "form-control" %>
+          </div>
+
+          <% unless user_signed_in? %>
+            <div class="mb-4">
+              <%= f.label :phone, "Номер телефона для связи", class: "form-label fw-bold" %>
+              <%= f.text_field :phone, class: "form-control", value: "+7", placeholder: "+7 (___) ___-__-__" %>
+            </div>
+          <% end %>
+
+          <div class="d-grid gap-2">
+            <%= f.submit 'Отправить заявку', class: "btn btn-success btn-lg shadow-sm" %>
+          </div>
+        <% end %>
       </div>
-      <div class="modal-footer">
+    </div>
+  </div>
+</div>
+<div class="modal fade" id="exampleModal2" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content border-0 shadow">
+      <div class="modal-header">
+        <h5 class="modal-title fw-bold">Связаться через мессенджер</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body py-4">
+        <div class="d-flex justify-content-around align-items-center flex-wrap gap-4">
 
+          <%# Telegram %>
+          <% if @organization.phones.last.telegramm.present? && Picture.last&.icon_telegram %>
+            <a href="https://t.me/<%= @organization.phones.last.telegramm %>" class="text-decoration-none text-center">
+              <%= image_tag(Picture.last.icon_telegram, class: "rounded-circle shadow-sm mb-2 hover-zoom", style: "width: 4rem; height: 4rem; object-fit: cover;") %>
+              <div class="small text-dark">Telegram</div>
+            </a>
+          <% end %>
+
+          <%# WhatsApp %>
+          <% if @organization.phones.last.whatsapp.present? && Picture.last&.icon_whatsapp %>
+            <a href="https://wa.me<%= @organization.phones.last.whatsapp.gsub(/\D/, '') %>" class="text-decoration-none text-center">
+              <%= image_tag(Picture.last.icon_whatsapp, class: "rounded-circle shadow-sm mb-2 hover-zoom", style: "width: 4rem; height: 4rem; object-fit: cover;") %>
+              <div class="small text-dark">WhatsApp</div>
+            </a>
+          <% end %>
+
+          <%# VK %>
+          <% if @organization.phones.last.vk.present? %>
+            <a href="https://vk.com<%= @organization.phones.last.vk %>" class="text-decoration-none text-center">
+              <img src="/images/VK.png" class="rounded-circle shadow-sm mb-2 hover-zoom" style="width: 4rem; height: 4rem;">
+              <div class="small text-dark">ВКонтакте</div>
+            </a>
+          <% end %>
+
+        </div>
       </div>
     </div>
   </div>

@@ -1,4 +1,6 @@
 @import "bootstrap";
+@import 'bootstrap-icons/font/bootstrap-icons.css';
+@import 'main';
 
 @font-face {
   font-family: "bankgothic";
@@ -65,4 +67,19 @@
 .hover-zoom:hover {
   transform: scale(2);
   z-index: 10;
+}
+
+.flash-container {
+  position: fixed;
+  top: 100px; /* Отступ от навбара */
+  right: 20px;
+  z-index: 9999; /* Поверх всех элементов */
+  max-width: 350px;
+  width: 100%;
+}
+
+.custom-alert {
+  border: none;
+  border-left: 5px solid rgba(0,0,0,0.2);
+  backdrop-filter: blur(5px); /* Легкое размытие фона */
 }

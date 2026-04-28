@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+  </head>
+  <body>
+    <%= render 'include/navbar' %>
+    <section class="py-5 bg-light">
+  <div class="container">
+    <%# Навигация назад %>
+    <nav class="mb-4">
+      <%= link_to works_path, class: "text-decoration-none text-muted" do %>
+        <i class="bi bi-arrow-left"></i> Вернуться к списку работ
+      <% end %>
+    </nav>
+
+    <div class="row g-5">
+      <%# ЛЕВАЯ КОЛОНКА: ГАЛЕРЕЯ %>
+      <div class="col-12 col-lg-7">
+        <div class="row g-3">
+          <% if @work.images.attached? %>
+            <% @work.images.each do |image| %>
+              <div class="col-6">
+                <%= image_tag image,
+                    class: "img-fluid rounded-3 shadow-sm w-100",
+                    style: "height: 300px; object-fit: cover; cursor: pointer;",
+                    data: { bs_toggle: "modal", bs_target: "#workImgModal", url: url_for(image) } %>
+              </div>
+            <% end %>
+          <% else %>
+            <div class="col-12"><%= image_tag '/images/no_photo.png', class: "img-fluid rounded" %></div>
+          <% end %>
+        </div>
+      </div>
+
+      <%# ПРАВАЯ КОЛОНКА: ОПИСАНИЕ %>
+      <div class="col-12 col-lg-5">
+        <div class="sticky-top" style="top: 100px;">
+          <h1 class="display-5 fw-bold mb-3"><%= @work.title %></h1>
+          <hr class="my-4" style="width: 50px; border-top: 3px solid #0d6efd; opacity: 1;">
+
+          <div class="work-content mb-5">
+            <%= simple_format @work.body, class: "lead text-secondary" %>
+          </div>
+
+          <%# Кнопка быстрой связи %>
+          <div class="card border-0 shadow-sm bg-primary text-white p-4 rounded-4">
+            <h5 class="mb-3">Хотите так же?</h5>
+            <p class="small mb-4 opacity-75">Рассчитаем стоимость ремонта за 5 минут по фото или описанию.</p>
+            <button class="btn btn-light btn-lg w-100 rounded-pill" data-bs-toggle="modal" data-bs-target="#exampleModal4">
+              Заказать консультацию
+            </button>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<%= render 'modal' %>
+<%# Модалка для увеличения фото %>
+<div class="modal fade" id="workImgModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-xl">
+    <div class="modal-content bg-transparent border-0 text-center">
+      <img id="workModalImg" src="" class="img-fluid rounded shadow-lg">
+    </div>
+  </div>
+</div>
+
+<script>
+  document.addEventListener("turbo:load", function() {
+    const modal = document.getElementById('workImgModal');
+    if (modal) {
+      modal.addEventListener('show.bs.modal', function(event) {
+        document.getElementById('workModalImg').src = event.relatedTarget.dataset.url;
+      });
+    }
+  });
+</script>
+
+  </body>
+</html>

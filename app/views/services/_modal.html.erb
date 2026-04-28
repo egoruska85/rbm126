@@ -1,0 +1,54 @@
+<div class="modal fade" id="exampleModal3" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-fullscreen-sm-down modal-lg">
+    <div class="modal-content">
+      <div class="modal-header bg-light">
+        <h5 class="modal-title fw-bold">РемБытМастер126 — Оставить заявку</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body p-4">
+        <% if flash[:alert] %>
+          <div class="alert alert-danger shadow-sm"><%= flash[:alert] %></div>
+        <% end %>
+
+        <%= form_for :order, url: orders_path, html: { class: "mx-auto", style: "max-width: 500px;" } do |f| %>
+        <div class="mb-3">
+          <%= f.label :service_id, "Выбранная услуга", class: "form-label fw-bold" %>
+          <%= f.select :service_id,
+                Service.all.map { |s| [s.name_title, s.id] },
+                { selected: @service&.id },
+                { class: "form-select form-select-lg" }
+          %>
+        </div>
+
+          <% unless user_signed_in? %>
+            <div class="mb-3">
+              <%= f.label :name, "Как к Вам обращаться?", class: "form-label fw-bold" %>
+              <%= f.text_field :name, class: "form-control", placeholder: "Иван Иванович" %>
+            </div>
+          <% end %>
+
+          <div class="mb-3">
+            <%= f.label :desc, "Опишите проблему в технике", class: "form-label fw-bold" %>
+            <%= f.text_area :desc, class: "form-control", rows: "5", placeholder: "Например: Стиральная машина не сливает воду..." %>
+          </div>
+
+          <div class="mb-3">
+            <%= f.label :images, "Прикрепите фото техники (если есть)", class: "form-label fw-bold" %>
+            <%= f.file_field :images, multiple: true, class: "form-control" %>
+          </div>
+
+          <% unless user_signed_in? %>
+            <div class="mb-4">
+              <%= f.label :phone, "Номер телефона для связи", class: "form-label fw-bold" %>
+              <%= f.text_field :phone, class: "form-control", value: "+7", placeholder: "+7 (___) ___-__-__" %>
+            </div>
+          <% end %>
+
+          <div class="d-grid gap-2">
+            <%= f.submit 'Отправить заявку', class: "btn btn-success btn-lg shadow-sm" %>
+          </div>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>

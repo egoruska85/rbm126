@@ -4,86 +4,92 @@
     <meta charset="utf-8">
     <title></title>
     <style>
+      body { padding-top: 115px; }
 
       .parallax {
-        /* Фоновая картинка */
-
-
-        /* Высота блока */
-        height: 87vh;
-
-        /* Эффект параллакса */
+        /* Добавляем темный градиент поверх изображения */
+        background-image: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)),
+                          url(<%= rails_blob_url(Picture.last.servces_image) %>);
+        min-height: 87vh;
         background-attachment: fixed;
         background-position: center;
         background-repeat: no-repeat;
         background-size: cover;
-
-        /* Центрирование текста */
-
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        padding: 50px 0;
       }
 
-      body {
-        padding-top: 115px;
-
-      }
-
-      .hero h1 {
-        font-weight: 700;
-      }
-
-      .section {
-
+      .card {
+        transition: 0.3s;
+        border: none;
       }
 
       .card:hover {
         transform: translateY(-5px);
-        transition: 0.3s;
+        box-shadow: 0 10px 20px rgba(0,0,0,0.3) !important;
+      }
 
-
+      /* Для мобильных параллакс лучше отключать (он часто глючит) */
+      @media (max-width: 768px) {
+        .parallax { background-attachment: scroll; }
       }
     </style>
+
   </head>
   <body>
     <%= render 'include/navbar' %>
-    <section id="services" class="section">
 
-      <div class="container-fluid text-center parallax" style="background-image: url(<%= rails_blob_url(Picture.last.servces_image) %>);">
-        <center>
-          <div class="row g-4">
-            <center>
-              <div class="col-md-6 col-lg-3">
-                <div class="card p-4 shadow-sm h-100" style="background-color: rgba(0, 0, 0, 0.9);">
+    <section id="services" class="parallax">
+      <div class="container text-center">
 
-                  <h2><%= link_to 'Наши услуги', services_path, class:"nav-link text-white"%></h2>
-                </div>
-              </div>
-            </center>
-          </div>
-          <br><br>
-        </center>
-        <div class="container">
-          <div class="row g-4">
-            <% @services.each do |service| %>
-              <div class="col-md-6 col-lg-3">
-                <div class="card p-4 shadow-lg h-100 text-white" style="background-color: rgba(0, 0, 0, 0.9);">
-                  <h4>
-                    <%= service.title.capitalize %>
-                  </h4>
-                </div>
+        <%# Главный заголовок-ссылка %>
+        <div class="row justify-content-center mb-5">
+          <div class="col-md-6 col-lg-4">
+            <%= link_to services_path, class: "text-decoration-none" do %>
+              <div class="card p-4 shadow-sm h-100" style="background-color: rgba(0, 0, 0, 0.85);">
+                <h2 class="m-0 text-white border-bottom d-inline-block pb-1">Наши услуги</h2>
               </div>
             <% end %>
           </div>
         </div>
+
+        <%# Сетка услуг-ссылок %>
+        <div class="row g-4 justify-content-center">
+          <% @services.each do |service| %>
+            <div class="col-6 col-md-4 col-lg-3">
+              <%# Оборачиваем всю карточку в ссылку на конкретную услугу %>
+              <%= link_to service_path(service), class: "text-decoration-none h-100 d-block" do %>
+                <div class="card p-4 shadow-lg h-100 text-white d-flex align-items-center justify-content-center"
+                     style="background-color: rgba(0, 0, 0, 0.8);">
+                  <h5 class="m-0 text-uppercase fw-bold" style="letter-spacing: 1px;">
+                    <%= service.title.capitalize %>
+                  </h5>
+                </div>
+              <% end %>
+            </div>
+          <% end %>
+        </div>
+
       </div>
     </section>
-    <section id="contacts" class="section">
-      <div class="container text-center">
-        <h2 class="mb-4">Контакты</h2>
 
-        <p>📞 <%= phone_to @organization.phones.last.phone, class:"btn btn-light" %></p>
-        <p>📍 Ессентуки</p>
-        <p>🕒 Ежедневно с 9:00 до 21:00</p>
+
+    <section id="contacts" class="py-5 bg-light">
+      <div class="container text-center shadow-sm p-5 bg-white rounded">
+        <h2 class="display-5 mb-4 fw-bold">Контакты</h2>
+        <div class="row justify-content-center">
+          <div class="col-md-4">
+            <p class="h4 mb-3">
+              <%= phone_to @organization.phones.last.phone, class: "btn btn-outline-dark btn-lg w-100 shadow-sm" %>
+            </p>
+            <p class="lead"><i class="bi bi-geo-alt"></i> Ессентуки</p>
+            <p class="text-muted">🕒 Ежедневно с 9:00 до 21:00</p>
+          </div>
+        </div>
       </div>
     </section>
   </body>
+
 </html>
