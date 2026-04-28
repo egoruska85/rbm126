@@ -7,6 +7,7 @@ class WorksController < ApplicationController
 
   def show
     @work = Work.find(params[:id])
+    @comments = @work.comments.order(created_at: :desc).page(params[:page]).per(2)
   end
 
   def new
@@ -16,7 +17,7 @@ class WorksController < ApplicationController
   def create
     @work = Work.new(work_params)
     if @work.save
-      redirect_to @work, notice: "Работа опубликована" 
+      redirect_to @work, notice: "Работа опубликована"
     end
 
   end

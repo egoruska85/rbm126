@@ -133,20 +133,36 @@
 
 <!-- ADVANTAGES -->
 
-<section id="abouts" class="section bg-light">
-  <div class="container text-center shadow-lg p-3 mb-5 bg-body-tertiary rounded">
-    <br><br>
-    <h2>О нас</h2>
-    <%= simple_format @organization.about, style:"font-size: 15px;" %>
-    <h4 class="mb-5">Почему выбирают нас</h4>
-    <div class="row g-4">
-      <% @entries.each do |enter| %>
-        <div class="col-md-6 col-lg-3">
-          <div class="card p-4 shadow-sm h-100">
-            <%= enter.title %>
-          </div>
+<section id="abouts" class="section py-5 bg-light">
+  <div class="container">
+    <%# Блок текста "О нас" %>
+    <div class="row justify-content-center mb-5">
+      <div class="col-lg-10 text-center shadow-sm p-5 bg-white rounded-4">
+        <h2 class="section-title mb-4">О нас</h2>
+        <div class="lead text-secondary" style="font-size: 1.1rem; line-height: 1.8;">
+          <%= simple_format @organization.about %>
         </div>
-      <% end %>
+      </div>
+    </div>
+
+    <%# Блок "Почему выбирают нас" %>
+    <div class="text-center mt-5">
+      <h3 class="fw-bold mb-5">Почему выбирают нас</h3>
+      <div class="row g-4">
+        <% @entries.each do |enter| %>
+          <div class="col-md-6 col-lg-3">
+            <div class="card p-4 shadow-sm h-100 border-0 rounded-4 transition-hover">
+              <div class="card-body d-flex flex-column align-items-center">
+                <%# Плейсхолдер для иконки - можно заменить на конкретные bi-icons %>
+                <div class="feature-icon-small bg-primary bg-gradient text-white mb-3 rounded-circle d-flex align-items-center justify-content-center" style="width: 50px; height: 50px;">
+                  <i class="bi bi-patch-check"></i>
+                </div>
+                <h5 class="fw-bold text-dark m-0"><%= enter.title %></h5>
+              </div>
+            </div>
+          </div>
+        <% end %>
+      </div>
     </div>
   </div>
 </section>
@@ -195,16 +211,7 @@
 
 
 <hr>
-<section id="contacts" class="section">
-  <div class="container text-center">
 
-    <h2 class="mb-4">Контакты</h2>
-
-    <p>📞 <%= phone_to @organization.phones.last.phone, class:"btn btn-light" %></p>
-    <p>📍 Ессентуки</p>
-    <p>🕒 Ежедневно с 9:00 до 21:00</p>
-  </div>
-</section>
 
 
 <!-- Bootstrap JS -->
