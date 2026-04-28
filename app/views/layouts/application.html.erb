@@ -75,6 +75,58 @@
     <%= yield %>
         </main>
       </div>
+      <section id="contacts" class="section py-5 bg-dark text-white">
+  <div class="container text-center">
+    <h2 class="section-title text-white mb-5">КОНТАКТЫ</h2>
+
+    <div class="row g-4 justify-content-center">
+      <%# Телефон %>
+      <div class="col-12 col-md-4">
+        <div class="p-3">
+          <div class="mb-3 text-primary">
+            <i class="bi bi-telephone-outbound" style="font-size: 2rem;"></i>
+          </div>
+          <h5 class="fw-bold">Телефон</h5>
+          <%= phone_to @organization.phones.last.phone, class: "text-white text-decoration-none fs-5" %>
+        </div>
+      </div>
+
+      <%# Адрес %>
+      <div class="col-12 col-md-4 border-start border-end border-secondary border-opacity-25">
+        <div class="p-3">
+          <div class="mb-3 text-primary">
+            <i class="bi bi-geo-alt" style="font-size: 2rem;"></i>
+          </div>
+          <h5 class="fw-bold">Адрес</h5>
+          <p class="fs-5 mb-0">г. Ессентуки</p>
+        </div>
+      </div>
+
+      <%# График %>
+      <div class="col-12 col-md-4">
+        <div class="p-3">
+          <div class="mb-3 text-primary">
+            <i class="bi bi-clock" style="font-size: 2rem;"></i>
+          </div>
+          <h5 class="fw-bold">Режим работы</h5>
+          <p class="fs-5 mb-0">Ежедневно: 9:00 — 21:00</p>
+        </div>
+      </div>
+    </div>
+
+    <%# Кнопка быстрой связи (WhatsApp/Telegram) если нужно %>
+    <div class="mt-5">
+      <hr class="w-25 mx-auto mb-4 opacity-25">
+      <p class="small text-secondary text-uppercase letter-spacing-1">Срочный вопрос? Пишите в мессенджеры</p>
+      <div class="d-flex justify-content-center gap-3 mt-3">
+         <button class="btn btn-outline-light rounded-pill px-4" data-bs-toggle="modal" data-bs-target="#exampleModal2">
+           Открыть чат
+         </button>
+      </div>
+    </div>
+  </div>
+</section>
+
       <footer class="bg-dark text-white text-center py-4 footer">
       © <%= Time.now.year %> Профессиональный сервис бытовой техники. Все права защищены.
       <p>

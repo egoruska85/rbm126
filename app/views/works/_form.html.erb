@@ -1,0 +1,84 @@
+<section class="comments-section mt-5 pt-5 border-top">
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-lg-8">
+
+        <h3 class="fw-bold mb-4">
+          <i class="bi bi-chat-left-text me-2"></i>Отзывы и вопросы (<%= @work.comments.count %>)
+        </h3>
+
+        <%# Используем @comments из контроллера вместо @work.comments %>
+        <div id="comments-list" class="mb-4">
+          <% if @comments.any? %>
+          <%= turbo_frame_tag "comments_pagination" do %>
+            <div id="comments-list">
+              <% @comments.each do |comment| %>
+              <div class="d-flex mb-4 p-3 bg-white rounded-4 shadow-sm border border-light">
+                <div class="flex-shrink-0">
+                  <div class="rounded-circle bg-primary text-white d-flex align-items-center justify-content-center fw-bold" style="width: 45px; height: 45px;">
+                    <%= comment.author[0].upcase if comment.author.present? %>
+                  </div>
+                </div>
+                <div class="ms-3 flex-grow-1">
+                  <div class="d-flex justify-content-between align-items-center mb-1">
+                    <h6 class="fw-bold m-0 text-dark"><%= comment.author %></h6>
+                    <small class="text-muted"><%= l(comment.created_at, format: :short) %></small>
+                  </div>
+                  <p class="mb-0 text-secondary" style="font-size: 0.95rem;"><%= comment.message %></p>
+                </div>
+              </div>
+              <% end %>
+            <%# Кнопки переключения страниц %>
+              <div class="d-flex justify-content-center mt-4 mb-5">
+                <%= paginate @comments  %>
+              </div>
+            </div>
+          <% end %>
+          <% else %>
+            <p class="text-center text-muted py-4 bg-light rounded-4">Пока никто не оставил отзыв. Будьте первым!</p>
+          <% end %>
+        </div>
+
+        <%# Форма добавления комментария %>
+        <div class="card border-0 shadow-lg rounded-4 overflow-hidden">
+          <div class="card-body p-4 p-md-5">
+            <h5 class="fw-bold mb-4">Оставить отзыв</h5>
+
+            <%= form_with model: [@work, Comment.new], class: "needs-validation" do |f| %>
+              <div class="row g-3">
+                <% unless user_signed_in? %>
+                  <div class="col-md-6">
+                    <div class="form-floating mb-3">
+                      <%= f.text_field :author, class: "form-control border-0 bg-light rounded-3", id: "floatingName", placeholder: "Ваше имя", required: true %>
+                      <%= f.label :author, "Ваше имя", for: "floatingName" %>
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="form-floating mb-3">
+                      <%= f.email_field :user_email, class: "form-control border-0 bg-light rounded-3", id: "floatingEmail", placeholder: "Email" %>
+                      <%= f.label :user_email, "Email (не публикуется)", for: "floatingEmail" %>
+                    </div>
+                  </div>
+                <% end %>
+
+                <div class="col-12">
+                  <div class="form-floating mb-3">
+                    <%= f.text_area :message, class: "form-control border-0 bg-light rounded-3", id: "floatingText", placeholder: "Ваш комментарий", style: "height: 120px", required: true %>
+                    <%= f.label :message, "Ваш комментарий или вопрос по работе...", for: "floatingText" %>
+                  </div>
+                </div>
+
+                <div class="col-12 text-end">
+                  <%= f.button type: "submit", class: "btn btn-primary btn-lg px-5 rounded-pill shadow-sm" do %>
+                    Опубликовать <i class="bi bi-send ms-2"></i>
+                  <% end %>
+                </div>
+              </div>
+            <% end %>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</section>
