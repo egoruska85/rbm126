@@ -38,6 +38,7 @@
     </style>
 
 <!-- Yandex.Metrika counter -->
+
 <script type="text/javascript">
     (function(m,e,t,r,i,k,a){
         m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
@@ -62,6 +63,17 @@
       </div>
       <footer class="bg-dark text-white text-center py-4 footer">
       © <%= Time.now.year %> Профессиональный сервис бытовой техники. Все права защищены.
+      <p>
+        Сайт разрботан в
+        <i>
+          <b>
+            <%= link_to 'https://idea-creation.ru', style:"text-decoration: none;font-family: 'BankGothic', sans-serif; font-size: 25px;" do %>
+              <%= image_tag('/images/logo.png', style:'width: 5rem;')  %>
+              IDEA
+            <% end %>
+          </b>
+        </i>
+      </p>
     </footer>
   </body>
 </html>
