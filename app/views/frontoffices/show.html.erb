@@ -34,89 +34,128 @@
   </head>
   <body>
     <%= render "include/navbar" %>
-    <section class="hero">
-      <center><h3><%= current_user.username %></h3></center>
-      <center><h1 class="display-5 mb-3">Заявкa 000<%= @order.id %></h1></center>
-      <hr>
-      <div class="container">
-        <%= @order.desc %>
-        <hr>
-        <%= @order.name %>
-        <hr>
-        Номер телефона: <%= phone_to @order.phone, class:"btn btn-success" do %>
-                          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-telephone-forward" viewBox="0 0 16 16">
-                            <path d="M3.654 1.328a.678.678 0 0 0-1.015-.063L1.605 2.3c-.483.484-.661 1.169-.45 1.77a17.6 17.6 0 0 0 4.168 6.608 17.6 17.6 0 0 0 6.608 4.168c.601.211 1.286.033 1.77-.45l1.034-1.034a.678.678 0 0 0-.063-1.015l-2.307-1.794a.68.68 0 0 0-.58-.122l-2.19.547a1.75 1.75 0 0 1-1.657-.459L5.482 8.062a1.75 1.75 0 0 1-.46-1.657l.548-2.19a.68.68 0 0 0-.122-.58zM1.884.511a1.745 1.745 0 0 1 2.612.163L6.29 2.98c.329.423.445.974.315 1.494l-.547 2.19a.68.68 0 0 0 .178.643l2.457 2.457a.68.68 0 0 0 .644.178l2.189-.547a1.75 1.75 0 0 1 1.494.315l2.306 1.794c.829.645.905 1.87.163 2.611l-1.034 1.034c-.74.74-1.846 1.065-2.877.702a18.6 18.6 0 0 1-7.01-4.42 18.6 18.6 0 0 1-4.42-7.009c-.362-1.03-.037-2.137.703-2.877zm10.762.135a.5.5 0 0 1 .708 0l2.5 2.5a.5.5 0 0 1 0 .708l-2.5 2.5a.5.5 0 0 1-.708-.708L14.293 4H9.5a.5.5 0 0 1 0-1h4.793l-1.647-1.646a.5.5 0 0 1 0-.708"/>
-                          </svg>
-                          <%= @order.phone %>
-                        <% end %>
-        <hr>
-        <% if @order.images.attached? %>
-          <% @images.each do |image| %>
-            <%= image_tag(image, style:"width: 15rem" ) %>
-          <% end %>
-        <% else %>
-          <%= image_tag('/images/no_photo.png', style:"width: 10rem")%>
-        <% end %>
-        <hr>
-        <% if @order.accepted == true %>
-          ✅ Принято
-        <% else %>
-          ⛔ Не взята
-        <% end %>
-        <% if @order.accepted? %>
-          <% if @order.completed == true %>
-            ✅ Выполнено
-          <% elsif @order.accepted == true && @order.completed != true %>
-            ⛔ В процессе(Заявка принята)
-          <% end %>
-        <% end %>
-        <%= turbo_stream_from "messages" %>
-        <div class="row">
-          <div class="col-12 col-lg-6">
-            <div class="p-3 border border-info border-start-0 rounded-end" style="background-color: #4682B4;">
+    <div class="container my-5">
+      <div class="row g-4">
 
-              <h6 style="color: white;">Сообщения</h6>
-              <hr class="fat-hr">
+        <%# --- ЛЕВАЯ КОЛОНКА: ДЕТАЛИ ЗАЯВКИ --- %>
+        <div class="col-12 col-lg-7">
+          <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+              <li class="breadcrumb-item"><%= link_to 'Кабинет', frontoffices_path %></li>
+              <li class="breadcrumb-item active">Заявка #<%= @order.id %></li>
+            </ol>
+          </nav>
+
+          <div class="card shadow-sm border-0 mb-4">
+            <div class="card-body p-4">
+              <div class="d-flex justify-content-between align-items-start mb-3">
+                <h1 class="h3 fw-bold">Заявка #000<%= @order.id %></h1>
+                <%# Динамический статус %>
+                <% if @order.completed? %>
+                  <span class="badge bg-success px-3 py-2">✅ Выполнено</span>
+                <% elsif @order.accepted? %>
+                  <span class="badge bg-info text-dark px-3 py-2">⚙️ В процессе</span>
+                <% else %>
+                  <span class="badge bg-warning text-dark px-3 py-2">⏳ Ожидает мастера</span>
+                <% end %>
+              </div>
+
+              <div class="bg-light p-3 rounded mb-4">
+                <h6 class="text-muted small text-uppercase fw-bold">Ваше описание:</h6>
+                <p class="mb-0 text-dark"><%= @order.desc %></p>
+              </div>
+
+              <h6 class="text-muted small text-uppercase fw-bold mb-3">Прикрепленные фото:</h6>
+              <div class="d-flex flex-wrap gap-2">
+                <% if @order.images.attached? %>
+                  <% @order.images.each do |image| %>
+                    <%= image_tag image,
+                        class: "rounded shadow-sm img-thumbnail",
+                        style: "width: 140px; height: 140px; object-fit: cover; cursor: zoom-in;",
+                        data: { bs_toggle: "modal", bs_target: "#imgModal", url: url_for(image) } %>
+                  <% end %>
+                <% else %>
+                  <p class="text-muted italic">Фотографии не были прикреплены</p>
+                <% end %>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <%# --- ПРАВАЯ КОЛОНКА: ЧАТ С МАСТЕРОМ --- %>
+        <div class="col-12 col-lg-5">
+          <div class="card shadow-sm border-0 d-flex flex-column" style="height: 600px;">
+            <div class="card-header bg-primary text-white py-3">
+              <h5 class="mb-0 d-flex align-items-center">
+                <i class="bi bi-chat-dots-fill me-2"></i> Чат с поддержкой
+              </h5>
+            </div>
+
+            <div class="card-body overflow-auto bg-light p-3" id="messages">
+              <%= turbo_stream_from "messages" %>
               <% @messages.each do |message| %>
-                <div class="row">
-                  <% if message.user_id == current_user.id %>
-                    <div class="col-6">
-                      <span class="badge text-bg-primary"><%= message.body %></span>
-                      <br>
-                      Вы
-                    </div>
-                    <hr style="color: blue;">
-                  <% end %>
-                  <% if message.user_id != current_user.id %>
-                    <div class="col-6">
-
-                    </div>
-                    <div class="col-6">
-                      <span class="badge text-bg-secondary"><%= message.body %></span>
-                      <br>
-                      <p allgn="left"><%= message.user.username %><p>
-                    </div>
-                    <hr style="color: blue;">
-                  <% end %>
+                <div class="d-flex mb-3 <%= message.user_id == current_user.id ? 'justify-content-end' : 'justify-content-start' %>">
+                  <div class="p-3 rounded-3 shadow-sm <%= message.user_id == current_user.id ? 'bg-primary text-white' : 'bg-white text-dark border' %>" style="max-width: 85%;">
+                    <small class="d-block mb-1 fw-bold opacity-75">
+                      <%= message.user_id == current_user.id ? "Вы" : "Мастер" %>
+                    </small>
+                    <%= message.body %>
+                  </div>
                 </div>
-
               <% end %>
             </div>
-            <%= form_with(model: [@order, Message.new], class: "message-input-container") do |f| %>
-              <%= f.text_area :body,
-                    class: "messenger-textarea",
-                    placeholder: "Напишите сообщение...",
-                    rows: 1 %>
-              <%= f.button type: "submit", class: "send-button btn btn-primary" do %>
-              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-send-fill" viewBox="0 0 16 16">
-    <path d="M15.964.686a.5.5 0 0 0-.65-.65L.767 5.855H.766l-.452.18a.5.5 0 0 0-.082.887l.41.26.001.002 4.995 3.178 3.178 4.995.002.002.26.41a.5.5 0 0 0 .886-.083zm-1.833 1.89L6.637 10.07l-.215-.338a.5.5 0 0 0-.154-.154l-.338-.215 7.494-7.494 1.178-.471z"/>
-    </svg> <!-- Иконка отправки -->
+
+            <div class="card-footer bg-white border-top-0 p-3">
+              <%= form_with(model: [@order, Message.new], class: "d-flex gap-2") do |f| %>
+                <%= f.text_area :body, class: "form-control border-2", placeholder: "Задать вопрос...", rows: 1 %>
+                <button type="submit" class="btn btn-primary px-3">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-send-fill" viewBox="0 0 16 16">
+  <path d="M15.964.686a.5.5 0 0 0-.65-.65L.767 5.855H.766l-.452.18a.5.5 0 0 0-.082.887l.41.26.001.002 4.995 3.178 3.178 4.995.002.002.26.41a.5.5 0 0 0 .886-.083zm-1.833 1.89L6.637 10.07l-.215-.338a.5.5 0 0 0-.154-.154l-.338-.215 7.494-7.494 1.178-.471z"/>
+</svg>
+                </button>
               <% end %>
-            <% end %>
+            </div>
           </div>
         </div>
 
       </div>
-    </section>
+    </div>
+
+    <%# Модальное окно для просмотра фото %>
+    <div class="modal fade" id="imgModal" tabindex="-1" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content bg-transparent border-0">
+          <img id="modalImg" src="" class="img-fluid rounded shadow-lg">
+        </div>
+      </div>
+    </div>
+
+    <script>
+      // Используем turbo:load для совместимости с Hotwire/Turbo
+      document.addEventListener("turbo:load", function() {
+        const modalElement = document.getElementById('imgModal');
+
+        // Проверяем, существует ли модалка на текущей странице
+        if (modalElement) {
+          modalElement.addEventListener('show.bs.modal', function(event) {
+            const button = event.relatedTarget; // Кнопка/картинка, на которую нажали
+            const imageUrl = button.getAttribute('data-url'); // Берем URL из data-url
+            const modalImage = document.getElementById('modalImg');
+
+            if (modalImage) {
+              modalImage.src = imageUrl;
+            }
+          });
+        }
+
+        // Автоскролл чата вниз
+        const msgContainer = document.getElementById('messages');
+        if (msgContainer) {
+          msgContainer.scrollTop = msgContainer.scrollHeight;
+        }
+      });
+    </script>
+
+
   </body>
 </html>

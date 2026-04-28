@@ -4,87 +4,82 @@
     <meta charset="utf-8">
     <title></title>
     <style>
-      .parallax {
-        /* Фоновая картинка */
-        background-image:
-        url(<%= rails_blob_url(@parallax) %>);
+      body { padding-top: 110px; }
 
-        /* Высота блока */
-        height: 90vh;
-
-        /* Эффект параллакса */
+      .parallax-service {
+        background-image: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)),
+                          url(<%= rails_blob_url(@service.image) if @service.image.attached? %>);
+        min-height: 90vh;
         background-attachment: fixed;
         background-position: center;
         background-repeat: no-repeat;
         background-size: cover;
-
-        /* Центрирование текста */
-
+        display: flex;
+        align-items: center;
+        padding: 50px 0;
       }
 
-      body {
-        padding-top: 110px;
-
+      .glass-card {
+        background-color: rgba(0, 0, 0, 0.85);
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.1);
       }
 
-      .hero {
-        background-image:
-        linear-gradient(
-            to right,
-            rgba(128, 128, 128, 0) 0%,
-            rgba(128, 128, 128, 0.5) 20%,
-            rgba(128, 128, 128, 0.8) 50%,
-            rgba(128, 128, 128, 0.5) 80%,
-            rgba(128, 128, 128, 0) 100%
-            ),
-          url(<%= rails_blob_url(@heroimage) %>);
-        color: white;
-        padding: 100px 20px;
-        text-align: center;
+      .price-item {
+        transition: 0.2s;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        padding: 10px 0;
       }
 
-      .hero h1 {
-        font-weight: 700;
-      }
-
-      .section {
-
-      }
-
-      .card:hover {
-        transform: translateY(-5px);
-        transition: 0.3s;
-
-
+      .price-item:hover {
+        background: rgba(255, 255, 255, 0.05);
+        padding-left: 10px;
       }
     </style>
+
   </head>
   <body>
     <%= render 'include/navbar' %>
-    <section id="services" class="section">
+    <section class="parallax-service">
+      <div class="container">
+        <div class="row justify-content-center g-4">
 
-      <div class="container-fluid text-center parallax" style="background-image: url(<%= rails_blob_url(@service.image) if @service.image.attached? %>);">
-        <center>
-          <div class="row g-4">
-            <center>
-              <div class="col-md-6 col-lg-3">
-                <div class="card p-4 shadow-sm h-100" style="background-color: rgba(0, 0, 0, 0.9);">
-                  <h1 class="text-white"><%= @service.title %></h1>
-                </div>
-                <br>
-                <div class="card p-4 shadow-sm h-100" style="background-color: rgba(0, 0, 0, 0.9);">
-                  <h4 class="text-white">Подробные работы</h4>
-                  <hr class="text-white">
-                    <% @service.subservices.each do |subservice| %>
-                      <p class="text-white"><%= subservice.title %> - <%= subservice.price %> &#8381;</p>
-                    <% end %>
-                </div>
-              </div>
-            </center>
+          <%# Левая колонка: Заголовок и призыв к действию %>
+          <div class="col-12 col-lg-5 text-center text-lg-start d-flex flex-column justify-content-center">
+            <h1 class="display-3 fw-bold text-white mb-4"><%= @service.title %></h1>
+            <p class="lead text-white-50 mb-5">Профессиональный ремонт с гарантией качества. Используем только оригинальные запчасти.</p>
+            <div class="d-grid d-md-flex gap-3">
+              <button class="btn btn-primary btn-lg px-5 shadow" data-bs-toggle="modal" data-bs-target="#exampleModal3">
+                Заказать ремонт
+              </button>
+            </div>
           </div>
-          <br><br>
-        </center>
+          <%= render 'modal' %>
+          <%# Правая колонка: Прайс-лист %>
+          <div class="col-12 col-lg-6">
+            <div class="card glass-card p-4 p-md-5 shadow-lg rounded-4 text-white">
+              <h3 class="mb-4 fw-bold border-bottom pb-3">Цены на услуги</h3>
 
+              <div class="service-list">
+                <% if @service.subservices.any? %>
+                  <% @service.subservices.each do |subservice| %>
+                    <div class="d-flex justify-content-between align-items-center price-item">
+                      <span class="fs-5"><%= subservice.title %></span>
+                      <span class="fw-bold text-primary fs-5"><%= subservice.price %> ₽</span>
+                    </div>
+                  <% end %>
+                <% else %>
+                  <p class="text-white-50">Список работ уточняйте у мастера</p>
+                <% end %>
+              </div>
+
+              <div class="mt-4 pt-3 small text-white-50">
+                * Итоговая стоимость зависит от сложности и запчастей.
+              </div>
+            </div>
+          </div>
+
+        </div>
       </div>
     </section>
   </body>

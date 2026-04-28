@@ -37,117 +37,129 @@
   </head>
   <body>
     <%= render "include/navbar" %>
-    <section class="hero">
-      <center><h1 class="display-5 mb-3">Заявкa 000<%= @order.id %></h1></center>
-      <hr>
-      <div class="container">
-        <%= @order.desc %>
-        <hr>
-        <%= @order.name %>
-        <hr>
-        Номер телефона: <%= phone_to @order.phone, class:"btn btn-success" do %>
-                          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-telephone-forward" viewBox="0 0 16 16">
-                            <path d="M3.654 1.328a.678.678 0 0 0-1.015-.063L1.605 2.3c-.483.484-.661 1.169-.45 1.77a17.6 17.6 0 0 0 4.168 6.608 17.6 17.6 0 0 0 6.608 4.168c.601.211 1.286.033 1.77-.45l1.034-1.034a.678.678 0 0 0-.063-1.015l-2.307-1.794a.68.68 0 0 0-.58-.122l-2.19.547a1.75 1.75 0 0 1-1.657-.459L5.482 8.062a1.75 1.75 0 0 1-.46-1.657l.548-2.19a.68.68 0 0 0-.122-.58zM1.884.511a1.745 1.745 0 0 1 2.612.163L6.29 2.98c.329.423.445.974.315 1.494l-.547 2.19a.68.68 0 0 0 .178.643l2.457 2.457a.68.68 0 0 0 .644.178l2.189-.547a1.75 1.75 0 0 1 1.494.315l2.306 1.794c.829.645.905 1.87.163 2.611l-1.034 1.034c-.74.74-1.846 1.065-2.877.702a18.6 18.6 0 0 1-7.01-4.42 18.6 18.6 0 0 1-4.42-7.009c-.362-1.03-.037-2.137.703-2.877zm10.762.135a.5.5 0 0 1 .708 0l2.5 2.5a.5.5 0 0 1 0 .708l-2.5 2.5a.5.5 0 0 1-.708-.708L14.293 4H9.5a.5.5 0 0 1 0-1h4.793l-1.647-1.646a.5.5 0 0 1 0-.708"/>
-                          </svg>
-                          <%= @order.phone %>
-                        <% end %>
-        <hr>
-        <% if @order.images.attached? %>
-          <% @order.images.each do |image| %>
-            <%= image_tag(image,
-              style: "width: 10rem; cursor: pointer;",
-              data: { bs_toggle: "modal", bs_target: "#imageModal", img_url: url_for(image) }
-            ) %>
-          <% end %>
-        <% else %>
-          <%= image_tag('/images/no_photo.png', style:"width: 10rem")%>
-        <% end %>
-        <div class="modal fade" id="imageModal" tabindex="-1">
-          <div class="modal-dialog modal-dialog-centered modal-lg">
-            <div class="modal-content bg-dark">
-              <div class="modal-body text-center">
-                <img id="modalImage" style="width: 100%;">
+    <div class="container my-5">
+      <div class="row g-4">
+
+        <%# --- ЛЕВАЯ КОЛОНКА: ИНФОРМАЦИЯ О ЗАЯВКЕ --- %>
+        <div class="col-12 col-lg-7">
+          <div class="card shadow-sm border-0 pt-3">
+            <div class="card-body">
+              <div class="d-flex justify-content-between align-items-center mb-3">
+                <h1 class="h3 mb-0 text-primary">Заявка #000<%= @order.id %></h1>
+                <div class="d-flex gap-2">
+                  <%# Кнопка Принять %>
+                  <%= button_to toggle_active_backoffice_path(@order), method: :patch,
+                      class: "btn btn-sm #{ @order.accepted ? 'btn-success' : 'btn-outline-warning' }" do %>
+                    <%= @order.accepted ? '✅ Принято' : '⛔ Принять' %>
+                  <% end %>
+
+                  <%# Кнопка Выполнено %>
+                  <% if @order.accepted? %>
+                    <%= button_to toggle_completed_backoffice_path(@order), method: :patch,
+                        class: "btn btn-sm #{ @order.completed ? 'btn-success' : 'btn-outline-primary' }" do %>
+                      <%= @order.completed ? '✅ Выполнено' : '⚙️ В процессе' %>
+                    <% end %>
+                  <% end %>
+                </div>
+              </div>
+
+              <hr>
+              <p class="lead mb-4"><%= @order.desc %></p>
+
+              <div class="mb-4">
+                <h6 class="text-muted small">Клиент:</h6>
+                <h5><%= @order.name %></h5>
+                <%= phone_to @order.phone, class: "btn btn-outline-success mt-2" do %>
+                  <i class="bi bi-telephone-fill me-2"></i><%= @order.phone %>
+                <% end %>
+              </div>
+
+              <h6 class="text-muted small">Фотографии:</h6>
+              <div class="d-flex flex-wrap gap-2 mt-2">
+                <% if @order.images.attached? %>
+                  <% @order.images.each do |image| %>
+                  <%= image_tag image,
+                                      class: "rounded shadow-sm",
+                                      style: "width: 80px; height: 80px; object-fit: cover; cursor: pointer;",
+                                      data: {
+                                        bs_toggle: "modal",
+                                        bs_target: "#listImageModal",
+                                        url: url_for(image)
+                                      } %>
+                  <% end %>
+                <% else %>
+                  <%= image_tag '/images/no_photo.png', style: "width: 100px;", class: "opacity-50" %>
+                <% end %>
+
+
               </div>
             </div>
           </div>
         </div>
-        <hr>
-        <%= button_to toggle_active_backoffice_path(@order),
-              method: :patch,
-              class: "btn btn-sm" do %>
 
-          <% if @order.accepted == true %>
-            ✅ Принято
-          <% else %>
-            ⛔ Не взята <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-box-arrow-in-right" viewBox="0 0 16 16">
-                          <path fill-rule="evenodd" d="M6 3.5a.5.5 0 0 1 .5-.5h8a.5.5 0 0 1 .5.5v9a.5.5 0 0 1-.5.5h-8a.5.5 0 0 1-.5-.5v-2a.5.5 0 0 0-1 0v2A1.5 1.5 0 0 0 6.5 14h8a1.5 1.5 0 0 0 1.5-1.5v-9A1.5 1.5 0 0 0 14.5 2h-8A1.5 1.5 0 0 0 5 3.5v2a.5.5 0 0 0 1 0z"/>
-                          <path fill-rule="evenodd" d="M11.854 8.354a.5.5 0 0 0 0-.708l-3-3a.5.5 0 1 0-.708.708L10.293 7.5H1.5a.5.5 0 0 0 0 1h8.793l-2.147 2.146a.5.5 0 0 0 .708.708z"/>
-                        </svg> Принять
-          <% end %>
+        <%# --- ПРАВАЯ КОЛОНКА: МЕССЕНДЖЕР --- %>
+        <div class="col-12 col-lg-5">
+          <div class="card shadow-sm border-0 d-flex flex-column" style="height: 600px;">
+            <div class="card-header bg-dark text-white py-3">
+              <h5 class="mb-0">Чат по заявке</h5>
+            </div>
 
-        <% end %>
-        <% if @order.accepted? %>
-          <%= button_to toggle_completed_backoffice_path(@order),
-                method: :patch,
-                class: "btn btn-sm" do %>
-
-            <% if @order.completed == true %>
-              ✅ Выполнено
-            <% elsif @order.accepted == true && @order.completed != true %>
-              ⛔ В процессе(Заявка принята)
-            <% end %>
-          <% end %>
-        <% end %>
-        <hr>
-        <%= turbo_stream_from "messages" %>
-        <div class="row">
-          <div class="col-12 col-lg-6">
-            <div class="p-3 border border-info border-start-0 rounded-end" style="background-color: #4682B4;">
-
-              <h6 style="color: white;">Сообщения</h6>
-              <hr class="fat-hr">
+            <div class="card-body overflow-auto bg-light" id="messages-list">
+              <%= turbo_stream_from "messages" %>
               <% @messages.each do |message| %>
-                <div class="row">
-                  <% if message.user_id == current_user.id %>
-                    <div class="col-6">
-                      <span class="badge text-bg-primary"><%= message.body %></span>
-                      <br>
-                      Вы
-                    </div>
-                    <hr style="color: blue;">
-                  <% end %>
-                  <% if message.user_id != current_user.id %>
-                    <div class="col-6">
-
-                    </div>
-                    <div class="col-6">
-                      <span class="badge text-bg-secondary"><%= message.body %></span>
-                      <br>
-                      <p allgn="left"><%= message.user.username %><p>
-                    </div>
-                    <hr style="color: blue;">
-                  <% end %>
+                <div class="mb-3 d-flex <%= message.user_id == current_user.id ? 'justify-content-end' : 'justify-content-start' %>">
+                  <div class="p-3 rounded shadow-sm <%= message.user_id == current_user.id ? 'bg-primary text-white' : 'bg-white text-dark' %>" style="max-width: 85%;">
+                    <small class="d-block mb-1 opacity-75 fw-bold">
+                      <%= message.user_id == current_user.id ? "Вы" : message.user.username %>
+                    </small>
+                    <%= message.body %>
+                  </div>
                 </div>
-
               <% end %>
             </div>
-            <%= form_with(model: [@order, Message.new], class: "message-input-container") do |f| %>
-              <%= f.text_area :body,
-                    class: "messenger-textarea",
-                    placeholder: "Напишите сообщение...",
-                    rows: 1 %>
-              <%= f.button type: "submit", class: "send-button btn btn-primary" do %>
-              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-send-fill" viewBox="0 0 16 16">
-    <path d="M15.964.686a.5.5 0 0 0-.65-.65L.767 5.855H.766l-.452.18a.5.5 0 0 0-.082.887l.41.26.001.002 4.995 3.178 3.178 4.995.002.002.26.41a.5.5 0 0 0 .886-.083zm-1.833 1.89L6.637 10.07l-.215-.338a.5.5 0 0 0-.154-.154l-.338-.215 7.494-7.494 1.178-.471z"/>
-    </svg> <!-- Иконка отправки -->
+
+            <div class="card-footer bg-white border-top-0 p-3">
+              <%= form_with(model: [@order, Message.new], class: "d-flex gap-2") do |f| %>
+                <%= f.text_area :body, class: "form-control", placeholder: "Напишите...", rows: 1 %>
+                <%= f.button type: "submit", class: "btn btn-primary" do %>
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-send-fill" viewBox="0 0 16 16">
+<path d="M15.964.686a.5.5 0 0 0-.65-.65L.767 5.855H.766l-.452.18a.5.5 0 0 0-.082.887l.41.26.001.002 4.995 3.178 3.178 4.995.002.002.26.41a.5.5 0 0 0 .886-.083zm-1.833 1.89L6.637 10.07l-.215-.338a.5.5 0 0 0-.154-.154l-.338-.215 7.494-7.494 1.178-.471z"/>
+</svg>
+                <% end %>
               <% end %>
-            <% end %>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <%# --- МОДАЛЬНОЕ ОКНО ДЛЯ ФОТО --- %>
+    <%# --- МОДАЛЬНОЕ ОКНО (Общее для всех картинок на странице) --- %>
+    <div class="modal fade" id="listImageModal" tabindex="-1" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content bg-transparent border-0">
+          <div class="modal-body p-0 text-center">
+            <img id="modalImgTarget" src="" class="img-fluid rounded shadow-lg">
           </div>
         </div>
       </div>
-    </section>
-    <div id="imageModal" class="image-modal">
-      <img id="modalImage">
     </div>
+
+    <script>
+      // Скрипт с поддержкой Turbo
+      document.addEventListener("turbo:load", function() {
+        const modalElement = document.getElementById('listImageModal');
+        if (modalElement) {
+          modalElement.addEventListener('show.bs.modal', function(event) {
+            const triggerImage = event.relatedTarget;
+            const imageUrl = triggerImage.getAttribute('data-url');
+            document.getElementById('modalImgTarget').src = imageUrl;
+          });
+        }
+      });
+    </script>
+
+
   </body>
 </html>
