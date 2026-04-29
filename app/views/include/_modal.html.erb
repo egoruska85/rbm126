@@ -1,0 +1,39 @@
+<div class="modal fade" id="exampleModal5" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content border-0 shadow">
+      <div class="modal-header">
+        <h5 class="modal-title fw-bold">Связаться через мессенджер</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body py-4">
+        <div class="d-flex justify-content-around align-items-center flex-wrap gap-4">
+
+          <%# Telegram %>
+          <% if @organization.phones.last.telegramm.present? && Picture.last&.icon_telegram %>
+            <a href="https://t.me/<%= @organization.phones.last.telegramm %>" class="text-decoration-none text-center">
+              <%= image_tag(Picture.last.icon_telegram, class: "rounded-circle shadow-sm mb-2 hover-zoom", style: "width: 4rem; height: 4rem; object-fit: cover;") %>
+              <div class="small text-dark">Telegram</div>
+            </a>
+          <% end %>
+
+          <%# WhatsApp %>
+          <% if @organization.phones.last.whatsapp.present? && Picture.last&.icon_whatsapp %>
+            <a href="https://wa.me<%= @organization.phones.last.whatsapp.gsub(/\D/, '') %>" class="text-decoration-none text-center">
+              <%= image_tag(Picture.last.icon_whatsapp, class: "rounded-circle shadow-sm mb-2 hover-zoom", style: "width: 4rem; height: 4rem; object-fit: cover;") %>
+              <div class="small text-dark">WhatsApp</div>
+            </a>
+          <% end %>
+
+          <%# VK %>
+          <% if @organization.phones.last.vk.present? %>
+            <a href="https://vk.com<%= @organization.phones.last.vk %>" class="text-decoration-none text-center">
+              <img src="/images/VK.png" class="rounded-circle shadow-sm mb-2 hover-zoom" style="width: 4rem; height: 4rem;">
+              <div class="small text-dark">ВКонтакте</div>
+            </a>
+          <% end %>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

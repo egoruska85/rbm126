@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+    <style>
+      body {
+        padding-top: 80px;
+
+      }
+
+      .hero {
+        background: linear-gradient(135deg, #2563eb, #1e40af);
+        color: white;
+        padding: 100px 20px;
+        text-align: left;
+      }
+
+      .hero h1 {
+        font-weight: 700;
+      }
+
+      .section {
+        padding: 80px 0;
+      }
+
+      .card:hover {
+        transform: translateY(-5px);
+        transition: 0.3s;
+
+
+      }
+
+
+    </style>
+  </head>
+  <body>
+    <%= render 'include/navbar' %>
+    <section class="hero py-5">
+      <div class="container">
+        <div class="row justify-content-center">
+          <div class="col-md-7 col-lg-6">
+
+            <%# Навигация назад %>
+            <div class="mb-4">
+              <%= link_to works_path, class: "text-white text-decoration-none small" do %>
+                <i class="bi bi-arrow-left"></i> Назад к списку работ
+              <% end %>
+            </div>
+
+            <div class="card shadow-lg border-0 rounded-4 overflow-hidden">
+              <div class="card-header bg-dark text-white p-4 border-0">
+                <h2 class="h4 mb-0 text-center text-white">Добавить выполненную работу</h2>
+              </div>
+
+              <div class="card-body p-4 p-md-5 bg-white text-dark">
+                <%= form_with model: @work, method: :patch, class: "needs-validation" do |f| %>
+
+                  <div class="mb-3">
+                    <%= f.label :title, "Наименование работы", class: "form-label fw-bold" %>
+                    <%= f.text_field :title, class: 'form-control form-control-lg', placeholder: 'Например: Ремонт стиральной машины Bosch', required: true %>
+                  </div>
+
+                  <div class="mb-3">
+                    <%= f.label :body, "Описание работ", class: "form-label fw-bold" %>
+                    <%= f.text_area :body, class: 'form-control', rows: 5, placeholder: 'Опишите поломку и процесс ремонта...', required: true %>
+                  </div>
+
+                  <div class="mb-4">
+                    <%= f.label :images, "Фотографии (перетаскивайте для сортировки)", class: "form-label fw-bold" %>
+                    <%= f.file_field :images,
+                          multiple: true,
+                          class: 'form-control',
+                          id: 'image-input',
+                          accept: 'image/*' %>
+
+                          <div id="image-preview" class="d-flex flex-wrap gap-3 mt-3">
+                            <% if @work.images.attached? %>
+                              <% @work.images.each do |image| %>
+                                <%# Проверка: если картинка только что загружена и не сохранена, она может не иметь blob_id %>
+                                <% if image.persisted? %>
+                                  <div class="position-relative border rounded p-1 bg-white shadow-sm existing-img" style="width:100px;">
+                                    <%# Попробуйте этот тег, если url_for не срабатывал %>
+                                    <%= image_tag image, class: "w-100 rounded", style: "height:80px; object-fit:cover;" %>
+
+                                    <div class="btn btn-danger btn-sm position-absolute top-0 end-0 d-flex align-items-center justify-content-center"
+                                         style="width:20px; height:20px; margin:-5px -5px 0 0; cursor:pointer;"
+                                         onclick="this.parentElement.remove()">×</div>
+
+                                    <%# Этот hidden_field говорит контроллеру: "Эту картинку НЕ УДАЛЯЙ" %>
+                                    <input type="hidden" name="work[existing_image_ids][]" value="<%= image.id %>">
+                                  </div>
+                                <% end %>
+                              <% end %>
+                            <% end %>
+                          </div>
+
+
+                  </div>
+
+
+                  <%= f.button type: "submit", class: "btn btn-primary btn-lg w-100 d-flex align-items-center justify-content-center gap-2 rounded-pill shadow-sm" do %>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-cloud-arrow-up-fill" viewBox="0 0 16 16">
+                      <path d="M8 2a5.53 5.53 0 0 0-3.594 1.342c-.766.66-1.321 1.52-1.464 2.383C1.266 6.095 0 7.555 0 9.318 0 11.366 1.708 13 3.781 13h8.906C14.502 13 16 11.57 16 9.773c0-1.636-1.242-2.969-2.834-3.194C12.923 3.999 10.69 2 8 2m2.354 5.146a.5.5 0 0 1-.708.708L8.5 6.707V10.5a.5.5 0 0 1-1 0V6.707L6.354 7.854a.5.5 0 1 1-.708-.708l1.5-1.5a.5.5 0 0 1 .708 0z"/>
+                    </svg>
+                    Опубликовать работу
+                  <% end %>
+                <% end %>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </section>
+    <script>
+      @work = Work.find(params[:id])
+
+      # 1. Получаем ID картинок, которые пользователь оставил (не удалил крестиком)
+      keep_ids = params[:work][:existing_image_ids] || []
+
+      # 2. Удаляем те вложения, которых нет в списке (если пользователь нажал "х")
+      @work.images.each do |image|
+        image.purge unless keep_ids.include?(image.id.to_s)
+      end
+
+      # 3. Обновляем остальные параметры и добавляем НОВЫЕ фото
+      if @work.update(work_params.except(:existing_image_ids))
+        redirect_to @work, notice: 'Работа обновлена'
+      else
+        render :edit
+      end
+    </script>
+
+
+
+
+  </body>
+</html>
