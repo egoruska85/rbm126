@@ -3,11 +3,13 @@ class WorksController < ApplicationController
 
   def index
     @works = Work.last(10)
+    @page_title = "РемБытМастер126 " +" - " + " Наши работы"
   end
 
   def show
     @work = Work.find(params[:id])
     @comments = @work.comments.order(created_at: :desc).page(params[:page]).per(2)
+    @page_title = "РемБытМастер126 " + " - " + @work.title
   end
 
   def new
