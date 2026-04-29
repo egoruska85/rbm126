@@ -1,7 +1,7 @@
 class ServicesController < ApplicationController
   def index
     @services = Service.all
-    @page_title = "Наши услуги"
+    @page_title = "РемБытМастер126 " + "-" + " Наши услуги"
   end
   def show
     @service = Service.find(params[:id])
@@ -11,6 +11,6 @@ class ServicesController < ApplicationController
   private
 
   def set_page_options(page_title)
-    @page_title = page_title
+    @page_title = "РемБытМастер126 " + "- " "#{page_title}"
   end
 end
