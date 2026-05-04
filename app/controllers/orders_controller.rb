@@ -13,9 +13,9 @@ def create
     @order.name = current_user.username
     @order.phone = current_user.phone
     @order.user_id = current_user.id
-    @order.accepted = false
-    @order.completed = false
   end
+  @order.accepted = false
+  @order.completed = false
   if @order.save
     redirect_to root_path, notice: "Заявка принята, с вами свяжутся ближайшее время"
   else
