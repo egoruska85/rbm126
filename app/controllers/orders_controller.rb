@@ -9,18 +9,34 @@ end
 
 def create
   @order = Order.new(order_params)
+  @contact = Contact.new(params[:contact])
   if user_signed_in?
     @order.name = current_user.username
     @order.phone = current_user.phone
     @order.user_id = current_user.id
+    @contact.email = current_user.email
+    @contact.name = current_user.username
+    @contact.phone = current_user.phone
+  else
+    @contact.email = 'new_order@mail.ru'
+    @contact.name = @order.name
+    @contact.phone = @order.phone
   end
   @order.accepted = false
   @order.completed = false
+  @contact.sender = 'egoruska85@mail.ru'
+
+
+
   if @order.save
     redirect_to root_path, notice: "Заявка принята, с вами свяжутся ближайшее время"
   else
     redirect_to root_path, alert: "Оформите заявку правильно"
   end
+
+  @contact.message = @order.desc + " " + "http://rembytmaster126.ru/backoffices/" + @order.id.to_s
+  @contact.request = request
+  @contact.deliver
 end
 
 def show
