@@ -15,12 +15,13 @@ class Contact < MailForm::Base
 
   attribute :message
   attribute :nickname, captcha: true
+  attribute :subject
 
   # Declare the e-mail headers. It accepts anything the mail method
   # in ActionMailer accepts.
   def headers
     {
-      subject: "Сообшение от сайт РЕМБЫТМАСТЕР126",
+      subject: %(#{subject}),
       #to: "remontessentuki@gmail.com",
       to: "egorarbuzov@gmail.com",
       from: %("#{name}" <#{sender}>)
