@@ -4,6 +4,8 @@ class MainController < ApplicationController
   def index
     @services = Service.order(:numeric)
     @contact = Contact.new
+    @reviews = Review.all.page(params[:page]).per(3)
+    @review = Review.new
   end
 
   private

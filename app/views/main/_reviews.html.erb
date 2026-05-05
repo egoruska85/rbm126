@@ -1,0 +1,78 @@
+<div class="container py-5">
+  <div class="row justify-content-center">
+
+    <!-- Колонка с формой -->
+    <div class="col-md-5">
+      <div class="card shadow-sm">
+        <div class="card-header bg-primary text-white">
+          <h4 class="mb-0">Оставить отзыв</h4>
+        </div>
+        <div class="card-body">
+          <%= form_with(model: @review, local: true) do |f| %>
+            <% unless user_signed_in? %>
+              <div class="mb-3">
+                <%= f.label :author, "Ваше имя", class: "form-label" %>
+                <%= f.text_field :author, class: "form-control", placeholder: "Иван Иванов" %>
+              </div>
+
+              <div class="mb-3">
+                <%= f.label :email, "Email", class: "form-label" %>
+                <%= f.email_field :email, class: "form-control", placeholder: "name@example.com" %>
+              </div>
+            <% end %>
+            <div class="mb-3 text-center">
+              <label class="form-label d-block">Ваша оценка</label>
+              <div class="star-rating-wrapper">
+                <% 5.step(by: -1, to: 1).each do |num| %>
+                  <%= f.radio_button :rating, num, id: "star#{num}", class: "btn-check" %>
+                  <label for="star<%= num %>" class="star-label">★</label>
+                <% end %>
+              </div>
+            </div>
+
+            <div class="mb-3">
+              <%= f.label :message, "Ваше сообщение", class: "form-label" %>
+              <%= f.text_area :message, rows: 4, class: "form-control", placeholder: "Напишите что вы думаете..." %>
+            </div>
+
+            <%= f.submit "Опубликовать", class: "btn btn-primary w-100" %>
+          <% end %>
+        </div>
+      </div>
+    </div>
+
+    <!-- Колонка со списком -->
+    <div class="col-md-7">
+      <h2 class="mb-4">Отзывы клиентов <span class="badge bg-secondary"><%= @reviews.count %></span></h2>
+
+      <div class="list-group shadow-sm">
+        <% if @reviews.any? %>
+          <% @reviews.each do |review| %>
+            <div class="list-group-item p-3">
+              <div class="d-flex w-100 justify-content-between align-items-center">
+                <h5 class="mb-1 text-primary"><%= review.author %></h5>
+                <small class="text-muted"><%= review.created_at.strftime("%d.%m.%Y") %></small>
+              </div>
+              <div class="mb-2">
+                <% review.rating.times do %>
+                  <span class="text-warning">★</span>
+                <% end %>
+                <% (5 - review.rating).times do %>
+                  <span class="text-muted">☆</span>
+                <% end %>
+              </div>
+              <p class="mb-1 text-secondary italic">"<%= review.message %>"</p>
+            </div>
+          <% end %>
+        <% else %>
+          <div class="alert alert-info">Пока отзывов нет. Будьте первым!</div>
+        <% end %>
+        <hr>
+        <div class="d-flex justify-content-center pagination-sm">
+          <%= paginate @reviews %>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
