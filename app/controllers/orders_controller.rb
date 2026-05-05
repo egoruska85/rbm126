@@ -31,7 +31,8 @@ def create
   else
     redirect_to root_path, alert: "Оформите заявку правильно"
   end
-  
+
+  @contact.subject = "Новый заказ № 000#{@order.id}: от #{@order.name}"
   @contact.name = @order.name
   @contact.phone = @order.phone
   @contact.message = @order.desc + " " + "http://rembytmaster126.ru/backoffices/" + @order.id.to_s
