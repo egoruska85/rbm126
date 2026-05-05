@@ -62,3 +62,31 @@ body { padding-top: 70px; font-family: 'Inter', sans-serif; }
   background: var(--primary-color);
   border-radius: 2px;
 }
+
+/* Обертка для звезд */
+.star-rating-wrapper {
+  display: flex;
+  flex-direction: row-reverse;
+  justify-content: center;
+  gap: 5px;
+}
+
+/* Скрываем стандартные радио-кнопки */
+.star-rating-wrapper input {
+  display: none;
+}
+
+/* Стили самих звезд-меток */
+.star-label {
+  font-size: 2.5rem;
+  color: #dee2e6; /* Серый цвет */
+  cursor: pointer;
+  transition: color 0.2s ease-in-out;
+}
+
+/* Эффект при наведении и выборе */
+.star-rating-wrapper input:checked ~ label,
+.star-rating-wrapper label:hover,
+.star-rating-wrapper label:hover ~ label {
+  color: #ffc107; /* Золотой цвет Bootstrap warning */
+}
