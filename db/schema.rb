@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2026_04_28_195355) do
+ActiveRecord::Schema[7.0].define(version: 2026_05_05_133125) do
   create_table "active_storage_attachments", force: :cascade do |t|
     t.string "name", null: false
     t.string "record_type", null: false
@@ -64,6 +64,18 @@ ActiveRecord::Schema[7.0].define(version: 2026_04_28_195355) do
     t.string "svg"
     t.text "path1"
     t.text "path2"
+  end
+
+  create_table "mailparametrs", force: :cascade do |t|
+    t.string "address"
+    t.integer "port"
+    t.string "domain"
+    t.string "username"
+    t.string "password"
+    t.string "authentication"
+    t.boolean "enable_starttls_auto"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "messages", force: :cascade do |t|

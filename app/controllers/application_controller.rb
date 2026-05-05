@@ -1,6 +1,6 @@
 class ApplicationController < ActionController::Base
   before_action :configure_permitted_parameters, if: :devise_controller?
-  before_action :set_locale, :set_variable
+  before_action :set_locale, :set_variable, :set_mailer_settings
 
   private
 
@@ -30,6 +30,21 @@ class ApplicationController < ActionController::Base
   end
 
   protected
+
+  def set_mailer_settings
+    @mail_params = Mailparametr.first
+    return unless @mail_params
+
+    ActionMailer::Base.smtp_settings = {
+      address:              @mail_params.address,
+      port:                 @mail_params.port,
+      domain:               @mail_params.domain,
+      user_name:            @mail_params.username,
+      password:             @mail_params.password,
+      authentication:       @mail_params.authentication,
+      enable_starttls_auto: @mail_params.enable_starttls_auto
+    }
+  end
 
   def configure_permitted_parameters
     added_attrs = [:username, :phone, :email, :password, :password_confirmation, :remember_me]
