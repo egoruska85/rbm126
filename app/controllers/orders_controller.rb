@@ -19,8 +19,6 @@ def create
     @contact.phone = current_user.phone
   else
     @contact.email = 'new_order@mail.ru'
-    @contact.name = @order.name
-    @contact.phone = @order.phone
   end
   @order.accepted = false
   @order.completed = false
@@ -33,7 +31,9 @@ def create
   else
     redirect_to root_path, alert: "Оформите заявку правильно"
   end
-
+  
+  @contact.name = @order.name
+  @contact.phone = @order.phone
   @contact.message = @order.desc + " " + "http://rembytmaster126.ru/backoffices/" + @order.id.to_s
   @contact.request = request
   @contact.deliver
