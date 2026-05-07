@@ -2,7 +2,7 @@ class MainController < ApplicationController
   before_action :set_page_options
 
   def index
-    @services = Service.order(:numeric)
+    @services = Service.order(:numeric).where(public: true)
     @contact = Contact.new
     @reviews = Review.all.page(params[:page]).per(3)
     @review = Review.new
