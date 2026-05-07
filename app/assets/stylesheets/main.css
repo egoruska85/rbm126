@@ -90,3 +90,16 @@ body { padding-top: 70px; font-family: 'Inter', sans-serif; }
 .star-rating-wrapper label:hover ~ label {
   color: #ffc107; /* Золотой цвет Bootstrap warning */
 }
+
+.map-container {
+  height: 100%;
+  min-height: 450px; /* Высота для мобилок */
+  width: 100%;
+  overflow: hidden;
+}
+
+/* Убираем возможные ограничения конструктора */
+.map-container ymaps {
+  width: 100% !important;
+  height: 100% !important;
+}
