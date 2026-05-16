@@ -4,7 +4,7 @@ class MainController < ApplicationController
   def index
     @services = Service.order(:numeric).where(public: true)
     @contact = Contact.new
-    @reviews = Review.all.page(params[:page]).per(3)
+    @reviews = Review.where(moderation: true).page(params[:page]).per(3)
     @review = Review.new
   end
 
