@@ -2,7 +2,9 @@
 <html>
   <head>
     <%= display_meta_tags title: @page_title, description: @page_description, keywords: @page_keywords %>
-    <%= favicon_link_tag '/images/logo_0.png' %>
+    <% if @organization&.logo&.attached? %>
+      <%= favicon_link_tag rails_blob_url(@organization.logo) %>
+    <% end %>
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
@@ -128,12 +130,12 @@
 </section>
 
       <footer class="bg-dark text-white text-center py-4 footer">
-      © <%= Time.now.year %> Профессиональный сервис бытовой техники. Все права защищены.
+      © <%= Time.now.year %> <%= @organization.name %>. Все права защищены.
       <p>
         Сайт разрботан в
         <i>
           <b>
-            <%= link_to 'https://idea-creation.ru', style:"text-decoration: none;font-family: 'BankGothic', sans-serif; font-size: 25px;" do %>
+            <%= link_to 'https://idea-russian.ru', style:"text-decoration: none;font-family: 'BankGothic', sans-serif; font-size: 25px;" do %>
               <%= image_tag('/images/logo.png', style:'width: 5rem;')  %>
               IDEA
             <% end %>

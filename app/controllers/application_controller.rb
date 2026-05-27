@@ -7,8 +7,7 @@ class ApplicationController < ActionController::Base
   def set_variable
     @organization = Organization.last
 
-    @logo_organization = @organization.logo
-    @name_organization = @organization.name
+
     @picturies = Picture.last
 
     @entries = Enter.all
